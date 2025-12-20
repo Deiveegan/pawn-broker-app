@@ -1,0 +1,71 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\Payment;
+use App\Models\Loan;
+use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
+
+class PaymentController extends Controller
+{
+    public function index()
+    {
+        $payments = Payment::with('loan.customer')->latest()->paginate(15);
+        return view('payments.index', compact('payments'));
+    }
+
+    public function create()
+    {
+        $loans = Loan::where('status', 'active')->with('customer')->get();
+        return view('payments.create', compact('loans'));
+    }
+
+    public function store(Request $request)
+    {
+        $validated = $request->validate([
+            'loan_id' => 'required|exists:loans,id',
+            'amount' => 'required|numeric|min:0',
+            'payment_date' => 'required|date',
+            'payment_type' => 'required|in:interest,principal,full_settlement',
+            'payment_method' => 'required|string',
+            'notes' => 'nullable|string',
+        ]);
+
+        // Generate unique receipt number
+        $validated['receipt_number'] = 'RCP' . date('Ymd') . str_pad(Payment::count() + 1, 4, '0', STR_PAD_LEFT);
+
+        $payment = Payment::create($validated);
+
+        // Update loan status if full settlement
+        if ($validated['payment_type'] === 'full_settlement') {
+            $payment->loan->update(['status' => 'closed']);
+        }
+
+        return redirect()->route('payments.show', $payment)
+            ->with('success', 'Payment recorded successfully.');
+    }
+
+    public function show(Payment $payment)
+    {
+        $payment->load('loan.customer');
+        return view('payments.show', compact('payment'));
+    }
+
+    public function destroy(Payment $payment)
+    {
+        $payment->delete();
+
+        return redirect()->route('payments.index')
+            ->with('success', 'Payment deleted successfully.');
+    }
+
+    public function generateReceipt(Payment $payment)
+    {
+        $payment->load('loan.customer');
+        
+        $pdf = Pdf::loadView('pdfs.payment-receipt', compact('payment'));
+        
+        return $pdf->download('receipt-' . $payment->receipt_number . '.pdf');
+    }
+}
