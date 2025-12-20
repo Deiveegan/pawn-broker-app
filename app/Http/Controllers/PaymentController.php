@@ -17,7 +17,8 @@ class PaymentController extends Controller
 
     public function create()
     {
-        $loans = Loan::where('status', 'active')->with('customer')->get();
+        // Use 'Active' instead of 'active' to match the database values
+        $loans = Loan::whereIn('status', ['Active', 'active'])->with('customer')->get();
         return view('payments.create', compact('loans'));
     }
 
@@ -29,6 +30,7 @@ class PaymentController extends Controller
             'payment_date' => 'required|date',
             'payment_type' => 'required|in:interest,principal,full_settlement',
             'payment_method' => 'required|string',
+            'transaction_id' => 'nullable|string',
             'notes' => 'nullable|string',
         ]);
 
@@ -39,7 +41,7 @@ class PaymentController extends Controller
 
         // Update loan status if full settlement
         if ($validated['payment_type'] === 'full_settlement') {
-            $payment->loan->update(['status' => 'closed']);
+            $payment->loan->update(['status' => 'Closed']);
         }
 
         return redirect()->route('payments.show', $payment)

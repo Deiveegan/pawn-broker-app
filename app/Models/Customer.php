@@ -8,7 +8,7 @@ class Customer extends Model
 {
     protected $fillable = [
         'name',
-        'phone',
+        'mobile',
         'email',
         'id_proof_type',
         'id_proof_number',

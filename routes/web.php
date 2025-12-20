@@ -8,7 +8,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return redirect()->route('customers.index');
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -21,6 +21,8 @@ Route::middleware('auth')->group(function () {
     
     // Loan routes
     Route::resource('loans', \App\Http\Controllers\LoanController::class);
+    Route::get('loans/{loan}/ticket', [\App\Http\Controllers\LoanController::class, 'ticket'])
+        ->name('loans.ticket');
     Route::get('loans/{loan}/pawn-ticket', [\App\Http\Controllers\LoanController::class, 'generatePawnTicket'])
         ->name('loans.pawn-ticket');
     
