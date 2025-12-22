@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Payment extends Model
 {
+    use \App\Traits\BelongsToShop;
+
     protected $fillable = [
         'loan_id',
         'amount',
@@ -15,6 +17,7 @@ class Payment extends Model
         'transaction_id',
         'receipt_number',
         'notes',
+        'shop_id',
     ];
 
     protected $casts = [

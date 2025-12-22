@@ -28,7 +28,7 @@
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-10" x-data="{ activeTooltip: null }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-8">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <!-- Profile Summary Card -->
@@ -129,49 +129,76 @@
                     <div class="md-card elevation-2 overflow-hidden">
                         <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
                             <h3 class="text-lg font-semibold text-gray-800">Loan History</h3>
-                            <button class="text-blue-600 hover:text-blue-800 text-sm font-medium">View All</button>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="min-w-full divide-y divide-gray-100">
                                 <thead class="bg-gray-50">
                                     <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Ticket #</th>
-                                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Amount</th>
-                                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Status</th>
-                                        <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase">Date</th>
-                                        <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase">Actions</th>
+                                        <th class="px-6 py-3 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Ticket #</th>
+                                        <th class="px-6 py-3 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Type</th>
+                                        <th class="px-6 py-3 text-left text-xs font-black text-gray-400 uppercase tracking-widest text-center">Items</th>
+                                        <th class="px-6 py-3 text-left text-xs font-black text-gray-400 uppercase tracking-widest">Amount</th>
+                                        <th class="px-6 py-3 text-left text-xs font-black text-gray-400 uppercase tracking-widest text-center">Status</th>
+                                        <th class="px-6 py-4 text-right text-xs font-black text-gray-400 uppercase tracking-widest">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody class="bg-white divide-y divide-gray-100">
                                     @forelse($customer->loans->sortByDesc('created_at') as $loan)
                                     <tr class="hover:bg-gray-50 transition-colors">
                                         <td class="px-6 py-4">
-                                            <span class="text-sm font-mono font-bold text-blue-600">#{{ $loan->ticket_number }}</span>
+                                            <p class="text-[10px] text-gray-400 font-bold mb-1">{{ $loan->loan_date->format('d M Y') }}</p>
+                                            <span class="text-sm font-black text-blue-600 tracking-tighter">#{{ $loan->ticket_number }}</span>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <p class="text-sm font-bold text-gray-900">₹{{ number_format($loan->principal_amount, 2) }}</p>
+                                            <span class="text-xs font-black text-gray-900 uppercase italic">{{ $loan->loan_type }}</span>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <!-- Info Icon Tooltip -->
+                                            <div class="relative inline-block" @mouseenter="activeTooltip = {{ $loan->id }}" @mouseleave="activeTooltip = null">
+                                                <span class="material-icons text-blue-600 cursor-pointer text-xl hover:scale-110 transition-transform">info</span>
+                                                
+                                                <!-- Popover -->
+                                                <div x-show="activeTooltip === {{ $loan->id }}" 
+                                                    x-transition:enter="transition ease-out duration-200"
+                                                    x-transition:enter-start="opacity-0 translate-y-2"
+                                                    x-transition:enter-end="opacity-100 translate-y-0"
+                                                    class="absolute z-50 w-64 bg-gray-900 text-white rounded-xl p-4 shadow-2xl -left-28 bottom-full mb-3 text-left border border-white/10"
+                                                    x-cloak>
+                                                    <p class="text-[10px] font-black text-blue-400 uppercase tracking-widest mb-2">Item Details</p>
+                                                    <ul class="space-y-2 text-xs">
+                                                        @foreach($loan->items as $item)
+                                                            <li class="border-b border-white/5 pb-2 last:border-0 last:pb-0">
+                                                                <p class="font-bold text-white uppercase">{{ $item->item_name }}</p>
+                                                                <p class="text-gray-400 italic text-[10px]">{{ $item->formatted_weight }} | {{ $item->purity }}</p>
+                                                            </li>
+                                                        @endforeach
+                                                    </ul>
+                                                    <div class="absolute w-3 h-3 bg-gray-900 rotate-45 -bottom-1.5 left-1/2 -ml-1.5 border-r border-b border-white/10"></div>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td class="px-6 py-4">
-                                            <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-bold
-                                                {{ $loan->status == 'Active' ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600' }}">
+                                            <p class="text-sm font-black text-gray-900 leading-none">₹{{ number_format($loan->principal_amount, 2) }}</p>
+                                            <p class="text-[9px] text-gray-400 font-bold mt-1 uppercase">{{ (float)$loan->interest_rate }}% Int</p>
+                                        </td>
+                                        <td class="px-6 py-4 text-center">
+                                            <span class="inline-flex items-center px-2 py-1 rounded-md text-[9px] font-black uppercase tracking-widest
+                                                {{ $loan->status == 'Active' ? 'bg-green-100 text-green-700 shadow-sm shadow-green-100' : 'bg-gray-100 text-gray-400' }}">
                                                 {{ $loan->status }}
                                             </span>
                                         </td>
-                                        <td class="px-6 py-4">
-                                            <p class="text-sm text-gray-500">{{ $loan->loan_date->format('d M Y') }}</p>
-                                        </td>
                                         <td class="px-6 py-4 text-right">
-                                            <a href="{{ route('loans.show', $loan) }}" class="text-blue-600 hover:text-blue-900">
+                                            <a href="{{ route('loans.show', $loan) }}" class="p-1.5 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all">
                                                 <span class="material-icons text-sm">visibility</span>
                                             </a>
                                         </td>
                                     </tr>
                                     @empty
                                     <tr>
-                                        <td colspan="5" class="px-6 py-12 text-center">
+                                        <td colspan="6" class="px-6 py-12 text-center">
                                             <div class="flex flex-col items-center">
-                                                <span class="material-icons text-gray-300 text-4xl mb-2">history</span>
-                                                <p class="text-gray-500">No loan history available</p>
+                                                <span class="material-icons text-gray-200 text-4xl mb-2">history</span>
+                                                <p class="text-gray-500 font-medium">No loan history available</p>
                                             </div>
                                         </td>
                                     </tr>
@@ -184,4 +211,9 @@
             </div>
         </div>
     </div>
+
+    <style>
+        [x-cloak] { display: none !important; }
+        .font-black { font-weight: 900; }
+    </style>
 </x-app-layout>

@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
+    use \App\Traits\BelongsToShop;
+
     protected $fillable = [
         'name',
         'mobile',
@@ -17,6 +19,7 @@ class Customer extends Model
         'state',
         'pincode',
         'photo',
+        'shop_id',
     ];
 
     public function loans()

@@ -25,6 +25,7 @@ class LoanController extends Controller
     {
         $validated = $request->validate([
             'customer_id' => 'required|exists:customers,id',
+            'loan_type' => 'required|string|in:Gold,Silver,Electronics,Others',
             'principal_amount' => 'required|numeric|min:0',
             'interest_rate' => 'required|numeric|min:0|max:100',
             'interest_type' => 'required|string|in:Flat,Reducing',
@@ -33,6 +34,15 @@ class LoanController extends Controller
             'grace_period_days' => 'nullable|integer|min:0',
             'penalty_rate' => 'nullable|numeric|min:0',
             'remarks' => 'nullable|string',
+            'valuation_amount' => 'nullable|numeric',
+            'total_weight' => 'nullable|numeric',
+            'market_rate' => 'nullable|numeric',
+            // Multiple Item Details
+            'items' => 'required|array|min:1',
+            'items.*.item_name' => 'required|string',
+            'items.*.description' => 'required|string',
+            'items.*.weight' => 'nullable|numeric|min:0',
+            'items.*.purity' => 'nullable|string',
         ]);
 
         // Map remarks to notes
@@ -42,8 +52,17 @@ class LoanController extends Controller
         // Calculate duration days (approx 30 days per month)
         $validated['duration_days'] = $validated['loan_period_months'] * 30;
 
-        // Generate unique loan number
-        $validated['loan_number'] = 'LN' . date('Ymd') . str_pad(Loan::count() + 1, 4, '0', STR_PAD_LEFT);
+        // Generate type-specific loan number
+        $prefixMap = [
+            'Gold' => 'GLN',
+            'Silver' => 'SLN',
+            'Electronics' => 'ELN',
+            'Others' => 'PLN'
+        ];
+        $prefix = $prefixMap[$validated['loan_type']] ?? 'LN';
+        
+        $todayCount = Loan::whereDate('created_at', today())->count() + 1;
+        $validated['loan_number'] = $prefix . date('Ymd') . str_pad($todayCount, 4, '0', STR_PAD_LEFT);
         
         // Calculate due date
         $loanDate = \Carbon\Carbon::parse($validated['loan_date']);
@@ -54,6 +73,23 @@ class LoanController extends Controller
         $validated['total_amount'] = $validated['principal_amount'] + $interest;
 
         $loan = Loan::create($validated);
+
+        // Create the items
+        foreach ($request->items as $itemData) {
+            $itemName = $itemData['item_name'];
+            if ($itemName === 'Others' && !empty($itemData['custom_item_name'])) {
+                $itemName = $itemData['custom_item_name'];
+            }
+
+            $loan->items()->create([
+                'category' => $request->loan_type,
+                'item_name' => $itemName,
+                'description' => $itemData['description'],
+                'weight' => $itemData['weight'],
+                'purity' => $itemData['purity'],
+                'estimated_value' => $request->principal_amount / count($request->items), // Split estimated value among items
+            ]);
+        }
 
         return redirect()->route('loans.show', $loan)
             ->with('success', 'Loan created successfully.');
@@ -74,6 +110,7 @@ class LoanController extends Controller
     public function update(Request $request, Loan $loan)
     {
         $validated = $request->validate([
+            'loan_type' => 'required|string|in:Gold,Silver,Electronics,Others',
             'interest_rate' => 'required|numeric',
             'interest_type' => 'required|string',
             'loan_period_months' => 'required|integer|min:1',
@@ -81,6 +118,10 @@ class LoanController extends Controller
             'penalty_rate' => 'nullable|numeric',
             'status' => 'required|in:Active,Closed,Overdue,Auctioned',
             'remarks' => 'nullable|string',
+            // Item Details
+            'item_description' => 'required|string',
+            'item_weight' => 'nullable|numeric|min:0',
+            'item_purity' => 'nullable|string',
         ]);
 
         // Map remarks to notes
@@ -106,6 +147,26 @@ class LoanController extends Controller
         }
 
         $loan->update($validated);
+
+        // Update the first item or create if not exists
+        $item = $loan->items->first();
+        if ($item) {
+            $item->update([
+                'category' => $request->loan_type,
+                'description' => $request->item_description,
+                'weight' => $request->item_weight,
+                'purity' => $request->item_purity,
+            ]);
+        } else {
+            $loan->items()->create([
+                'category' => $request->loan_type,
+                'item_name' => $request->loan_type . ' Item',
+                'description' => $request->item_description,
+                'weight' => $request->item_weight,
+                'purity' => $request->item_purity,
+                'estimated_value' => $loan->principal_amount,
+            ]);
+        }
 
         return redirect()->route('loans.show', $loan)
             ->with('success', 'Loan updated successfully.');

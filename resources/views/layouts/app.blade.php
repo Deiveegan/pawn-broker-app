@@ -19,6 +19,8 @@
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
         <style>
             * {
                 font-family: 'Roboto', sans-serif;

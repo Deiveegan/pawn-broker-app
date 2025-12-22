@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, \App\Traits\BelongsToShop;
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'shop_id',
     ];
+
+    public function isSuperAdmin()
+    {
+        return $this->role === 'super_admin';
+    }
 
     /**
      * The attributes that should be hidden for serialization.

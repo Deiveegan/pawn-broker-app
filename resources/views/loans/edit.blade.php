@@ -39,13 +39,25 @@
                             </div>
                         </div>
 
-                        <!-- Loan Details -->
-                        <div>
                             <h4 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
                                 <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm font-bold">1</span>
                                 Principal & Interest
                             </h4>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <!-- Loan Type -->
+                                <div class="relative md:col-span-2">
+                                    <select name="loan_type" id="loan_type" required
+                                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors appearance-none bg-white">
+                                        <option value="Gold" {{ old('loan_type', $loan->loan_type) == 'Gold' ? 'selected' : '' }}>Gold</option>
+                                        <option value="Silver" {{ old('loan_type', $loan->loan_type) == 'Silver' ? 'selected' : '' }}>Silver</option>
+                                        <option value="Electronics" {{ old('loan_type', $loan->loan_type) == 'Electronics' ? 'selected' : '' }}>Electronics</option>
+                                        <option value="Others" {{ old('loan_type', $loan->loan_type) == 'Others' ? 'selected' : '' }}>Others</option>
+                                    </select>
+                                    <label for="loan_type" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-blue-600">
+                                        Loan Type <span class="text-red-500">*</span>
+                                    </label>
+                                    <span class="material-icons absolute right-3 top-4 text-gray-400 pointer-events-none">expand_more</span>
+                                </div>
                                 <div class="relative">
                                     <input type="number" name="principal_amount" id="principal_amount" value="{{ old('principal_amount', $loan->principal_amount) }}" required step="0.01" min="0"
                                         class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors placeholder-transparent border-gray-200 bg-gray-50 cursor-not-allowed"
@@ -56,12 +68,18 @@
                                 </div>
 
                                 <div class="relative">
-                                    <input type="number" name="interest_rate" id="interest_rate" value="{{ old('interest_rate', $loan->interest_rate) }}" required step="0.01" min="0" max="100"
-                                        class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors placeholder-transparent"
-                                        placeholder="Interest Rate">
-                                    <label for="interest_rate" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600">
+                                    <select name="interest_rate" id="interest_rate" required
+                                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors appearance-none bg-white">
+                                        @foreach([1, 1.5, 2, 2.5, 3, 4, 5] as $rate)
+                                            <option value="{{ $rate }}" {{ old('interest_rate', (float)$loan->interest_rate) == $rate ? 'selected' : '' }}>
+                                                {{ $rate }}% per month
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <label for="interest_rate" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-blue-600">
                                         Interest Rate (% per month) <span class="text-red-500">*</span>
                                     </label>
+                                    <span class="material-icons absolute right-3 top-4 text-gray-400 pointer-events-none">expand_more</span>
                                     @error('interest_rate')
                                         <p class="mt-1.5 text-sm text-red-600 flex items-center"><span class="material-icons text-xs mr-1">error</span>{{ $message }}</p>
                                     @enderror
@@ -128,12 +146,45 @@
                                     </label>
                                 </div>
                                 
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Item Details -->
+                        <div>
+                            <h4 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
+                                <span class="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm font-bold">3</span>
+                                Item Details
+                            </h4>
+                            @php $item = $loan->items->first(); @endphp
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                <!-- Description -->
                                 <div class="relative md:col-span-2">
-                                    <textarea name="remarks" id="remarks" rows="2"
+                                    <textarea name="item_description" id="item_description" rows="2" required
                                         class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors placeholder-transparent resize-none"
-                                        placeholder="Notes">{{ old('remarks', $loan->remarks) }}</textarea>
-                                    <label for="remarks" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600">
-                                        Remarks / Item Details
+                                        placeholder="Item Description">{{ old('item_description', $item->description ?? '') }}</textarea>
+                                    <label for="item_description" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600">
+                                        Item Description <span class="text-red-500">*</span>
+                                    </label>
+                                </div>
+
+                                <!-- Weight -->
+                                <div class="relative">
+                                    <input type="number" name="item_weight" id="item_weight" value="{{ old('item_weight', $item->weight ?? '') }}" step="0.001" min="0"
+                                        class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors placeholder-transparent"
+                                        placeholder="Weight">
+                                    <label for="item_weight" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600">
+                                        Weight (gms)
+                                    </label>
+                                </div>
+
+                                <!-- Purity -->
+                                <div class="relative">
+                                    <input type="text" name="item_purity" id="item_purity" value="{{ old('item_purity', $item->purity ?? '') }}"
+                                        class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition-colors placeholder-transparent"
+                                        placeholder="Purity">
+                                    <label for="item_purity" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-blue-600">
+                                        Purity (e.g. 22K, 916)
                                     </label>
                                 </div>
                             </div>
