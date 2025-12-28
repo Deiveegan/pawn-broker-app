@@ -12,6 +12,11 @@ class LoanController extends Controller
     public function index()
     {
         $loans = Loan::with(['customer', 'items'])->latest()->paginate(15);
+        
+        if (request()->expectsJson()) {
+            return response()->json($loans);
+        }
+
         return view('loans.index', compact('loans'));
     }
 
@@ -91,6 +96,13 @@ class LoanController extends Controller
             ]);
         }
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Loan created successfully.',
+                'loan' => $loan->load('items')
+            ], 201);
+        }
+
         return redirect()->route('loans.show', $loan)
             ->with('success', 'Loan created successfully.');
     }
@@ -98,6 +110,11 @@ class LoanController extends Controller
     public function show(Loan $loan)
     {
         $loan->load(['customer', 'items', 'payments']);
+        
+        if (request()->expectsJson()) {
+            return response()->json($loan);
+        }
+
         return view('loans.show', compact('loan'));
     }
 
@@ -168,6 +185,13 @@ class LoanController extends Controller
             ]);
         }
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Loan updated successfully.',
+                'loan' => $loan->load('items')
+            ]);
+        }
+
         return redirect()->route('loans.show', $loan)
             ->with('success', 'Loan updated successfully.');
     }
@@ -175,6 +199,10 @@ class LoanController extends Controller
     public function destroy(Loan $loan)
     {
         $loan->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Loan deleted successfully.']);
+        }
 
         return redirect()->route('loans.index')
             ->with('success', 'Loan deleted successfully.');

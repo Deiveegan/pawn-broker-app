@@ -14,6 +14,11 @@ class ShopController extends Controller
     public function index()
     {
         $shops = Shop::withCount(['customers', 'loans'])->latest()->paginate(15);
+        
+        if (request()->expectsJson()) {
+            return response()->json($shops);
+        }
+
         return view('super-admin.shops.index', compact('shops'));
     }
 
@@ -45,7 +50,7 @@ class ShopController extends Controller
             'is_active' => true,
         ]);
 
-        User::create([
+        $admin = User::create([
             'name' => $request->admin_name,
             'email' => $request->admin_email,
             'password' => Hash::make($request->admin_password),
@@ -53,12 +58,24 @@ class ShopController extends Controller
             'shop_id' => $shop->id,
         ]);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Shop and Admin created successfully.',
+                'shop' => $shop,
+                'admin' => $admin
+            ], 201);
+        }
+
         return redirect()->route('super-admin.shops.index')->with('success', 'Shop and Admin created successfully.');
     }
 
-    public function edit(Shop $shop)
+    public function show(Shop $shop)
     {
-        return view('super-admin.shops.edit', compact('shop'));
+        $shop->loadCount(['customers', 'loans']);
+        if (request()->expectsJson()) {
+            return response()->json($shop);
+        }
+        return view('super-admin.shops.show', compact('shop'));
     }
 
     public function update(Request $request, Shop $shop)
@@ -82,12 +99,41 @@ class ShopController extends Controller
 
         $shop->update($data);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Shop updated successfully.',
+                'shop' => $shop
+            ]);
+        }
+
         return redirect()->route('super-admin.shops.index')->with('success', 'Shop updated successfully.');
+    }
+
+    public function destroy(Shop $shop)
+    {
+        if ($shop->logo) {
+            Storage::disk('public')->delete($shop->logo);
+        }
+        $shop->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Shop deleted successfully.']);
+        }
+
+        return redirect()->route('super-admin.shops.index')->with('success', 'Shop deleted successfully.');
     }
 
     public function toggleStatus(Shop $shop)
     {
         $shop->update(['is_active' => !$shop->is_active]);
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'message' => 'Shop status toggled successfully.',
+                'is_active' => $shop->is_active
+            ]);
+        }
+
         return back()->with('success', 'Shop status toggled successfully.');
     }
 }

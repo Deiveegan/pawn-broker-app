@@ -25,6 +25,11 @@ class CheckShopStatus
             // Check if shop is active
             if ($user->shop_id && (!$user->shop || !$user->shop->is_active)) {
                 Auth::logout();
+                
+                if ($request->expectsJson()) {
+                    return response()->json(['message' => 'Your shop account is currently disabled.'], 403);
+                }
+
                 return redirect()->route('login')->withErrors(['email' => 'Your shop account is currently disabled. Please contact the administrator.']);
             }
         }

@@ -12,6 +12,11 @@ class PaymentController extends Controller
     public function index()
     {
         $payments = Payment::with('loan.customer')->latest()->paginate(15);
+        
+        if (request()->expectsJson()) {
+            return response()->json($payments);
+        }
+
         return view('payments.index', compact('payments'));
     }
 
@@ -44,6 +49,13 @@ class PaymentController extends Controller
             $payment->loan->update(['status' => 'Closed']);
         }
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Payment recorded successfully.',
+                'payment' => $payment
+            ], 201);
+        }
+
         return redirect()->route('payments.show', $payment)
             ->with('success', 'Payment recorded successfully.');
     }
@@ -51,12 +63,21 @@ class PaymentController extends Controller
     public function show(Payment $payment)
     {
         $payment->load('loan.customer');
+        
+        if (request()->expectsJson()) {
+            return response()->json($payment);
+        }
+
         return view('payments.show', compact('payment'));
     }
 
     public function destroy(Payment $payment)
     {
         $payment->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Payment deleted successfully.']);
+        }
 
         return redirect()->route('payments.index')
             ->with('success', 'Payment deleted successfully.');

@@ -11,6 +11,11 @@ class CustomerController extends Controller
     public function index()
     {
         $customers = Customer::with('loans')->latest()->paginate(15);
+        
+        if (request()->expectsJson()) {
+            return response()->json($customers);
+        }
+
         return view('customers.index', compact('customers'));
     }
 
@@ -40,6 +45,13 @@ class CustomerController extends Controller
 
         $customer = Customer::create($validated);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Customer created successfully.',
+                'customer' => $customer
+            ], 201);
+        }
+
         return redirect()->route('customers.show', $customer)
             ->with('success', 'Customer created successfully.');
     }
@@ -47,6 +59,11 @@ class CustomerController extends Controller
     public function show(Customer $customer)
     {
         $customer->load(['loans.items', 'loans.payments']);
+        
+        if (request()->expectsJson()) {
+            return response()->json($customer);
+        }
+
         return view('customers.show', compact('customer'));
     }
 
@@ -79,6 +96,13 @@ class CustomerController extends Controller
 
         $customer->update($validated);
 
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Customer updated successfully.',
+                'customer' => $customer
+            ]);
+        }
+
         return redirect()->route('customers.show', $customer)
             ->with('success', 'Customer updated successfully.');
     }
@@ -90,6 +114,10 @@ class CustomerController extends Controller
         }
         
         $customer->delete();
+
+        if (request()->expectsJson()) {
+            return response()->json(['message' => 'Customer deleted successfully.']);
+        }
 
         return redirect()->route('customers.index')
             ->with('success', 'Customer deleted successfully.');
