@@ -13,7 +13,9 @@ class ShopController extends Controller
 {
     public function index()
     {
-        $shops = Shop::withCount(['customers', 'loans'])->latest()->paginate(15);
+        $shops = Shop::with(['users' => function($q) {
+            $q->where('role', 'admin');
+        }])->withCount(['customers', 'loans'])->latest()->paginate(15);
         
         if (request()->expectsJson()) {
             return response()->json($shops);
@@ -71,7 +73,9 @@ class ShopController extends Controller
 
     public function show(Shop $shop)
     {
-        $shop->loadCount(['customers', 'loans']);
+        $shop->load(['users' => function($q) {
+            $q->where('role', 'admin');
+        }])->loadCount(['customers', 'loans']);
         if (request()->expectsJson()) {
             return response()->json($shop);
         }

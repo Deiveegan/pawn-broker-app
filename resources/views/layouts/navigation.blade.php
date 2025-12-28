@@ -1,61 +1,68 @@
-<nav x-data="{ open: false }" class="bg-white elevation-2 sticky top-0 z-50">
+<nav x-data="{ open: false }" class="bg-white border-b border-slate-200 sticky top-0 z-50 premium-shadow">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between h-16">
+        <div class="flex justify-between h-20">
             <div class="flex items-center">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 group">
+                    <a href="{{ Auth::user()->role === 'super_admin' ? route('super-admin.dashboard') : route('dashboard') }}" class="flex items-center space-x-3 group">
                         @if(Auth::user()->role !== 'super_admin' && Auth::user()->shop && Auth::user()->shop->logo)
-                            <img src="{{ Storage::url(Auth::user()->shop->logo) }}" class="h-10 w-auto rounded-lg" alt="{{ Auth::user()->shop->name }}">
+                            <img src="{{ Storage::url(Auth::user()->shop->logo) }}" class="h-12 w-12 rounded-2xl object-contain bg-slate-50 border border-slate-100 p-1 shadow-sm group-hover:border-blue-200 transition-all" alt="{{ Auth::user()->shop->name }}">
                         @else
-                            <div class="bg-gradient-to-br from-blue-600 to-blue-700 p-2 rounded-lg elevation-1 group-hover:elevation-2 transition-all">
-                                <span class="material-icons text-white text-2xl">account_balance</span>
+                            <div class="bg-slate-900 p-2.5 rounded-2xl shadow-lg shadow-slate-900/20 group-hover:scale-110 transition-all">
+                                <span class="material-symbols-rounded text-white text-2xl leading-none">account_balance</span>
                             </div>
                         @endif
-                        <span class="text-xl font-black text-gray-900 hidden md:block tracking-tighter uppercase">
-                            {{ Auth::user()->role !== 'super_admin' && Auth::user()->shop ? Auth::user()->shop->name : config('app.name') }}
-                        </span>
+                        <div class="flex flex-col">
+                            <span class="text-base font-black text-slate-900 hidden md:block tracking-tighter uppercase leading-none">
+                                {{ Auth::user()->role !== 'super_admin' && Auth::user()->shop ? Auth::user()->shop->name : config('app.name') }}
+                            </span>
+                            @if(Auth::user()->role !== 'super_admin' && Auth::user()->shop)
+                                <span class="text-[9px] font-black text-blue-600 uppercase tracking-widest mt-1 hidden md:block">Authorized Terminal</span>
+                            @endif
+                        </div>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-2 sm:ms-10 sm:flex items-center">
+                <div class="hidden space-x-1 sm:ms-10 sm:flex items-center">
                     @if(Auth::user()->role === 'super_admin')
-                        <a href="{{ route('super-admin.dashboard') }}" 
-                            class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ request()->routeIs('super-admin.dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition-all font-black text-xs uppercase tracking-widest">
-                            <span class="material-icons text-xl">admin_panel_settings</span>
-                            <span>Admin Center</span>
-                        </a>
-                        <a href="{{ route('super-admin.shops.index') }}" 
-                            class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ request()->routeIs('super-admin.shops.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition-all font-black text-xs uppercase tracking-widest">
-                            <span class="material-icons text-xl">store</span>
-                            <span>Manage Shops</span>
-                        </a>
+                        <x-nav-link :href="route('super-admin.dashboard')" :active="request()->routeIs('super-admin.dashboard')" class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all">
+                            <span class="material-symbols-rounded text-xl">dashboard</span>
+                            <span class="font-black text-[10px] uppercase tracking-[0.15em]">Dashboard</span>
+                        </x-nav-link>
+                        
+                        <x-nav-link :href="route('super-admin.shops.index')" :active="request()->routeIs('super-admin.shops.*')" class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all">
+                            <span class="material-symbols-rounded text-xl">store</span>
+                            <span class="font-black text-[10px] uppercase tracking-[0.15em]">Manage Shops</span>
+                        </x-nav-link>
                     @else
-                        <a href="{{ route('dashboard') }}" 
-                            class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ request()->routeIs('dashboard') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition-all font-black text-xs uppercase tracking-widest">
-                            <span class="material-icons text-xl">dashboard</span>
-                            <span>Dashboard</span>
-                        </a>
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all">
+                            <span class="material-symbols-rounded text-xl">dashboard</span>
+                            <span class="font-black text-[10px] uppercase tracking-[0.15em]">Overview</span>
+                        </x-nav-link>
                         
-                        <a href="{{ route('customers.index') }}" 
-                            class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ request()->routeIs('customers.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition-all font-black text-xs uppercase tracking-widest">
-                            <span class="material-icons text-xl">people</span>
-                            <span>Customers</span>
-                        </a>
+                        <x-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')" class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all">
+                            <span class="material-symbols-rounded text-xl">groups</span>
+                            <span class="font-black text-[10px] uppercase tracking-[0.15em]">Clients</span>
+                        </x-nav-link>
                         
-                        <a href="{{ route('loans.index') }}" 
-                            class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ request()->routeIs('loans.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition-all font-black text-xs uppercase tracking-widest">
-                            <span class="material-icons text-xl">receipt_long</span>
-                            <span>Loans</span>
-                        </a>
+                        <x-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.*')" class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all">
+                            <span class="material-symbols-rounded text-xl">contract</span>
+                            <span class="font-black text-[10px] uppercase tracking-[0.15em]">Instruments</span>
+                        </x-nav-link>
                         
-                        <a href="{{ route('payments.index') }}" 
-                            class="flex items-center space-x-2 px-4 py-2 rounded-lg {{ request()->routeIs('payments.*') ? 'bg-blue-50 text-blue-700' : 'text-gray-700 hover:bg-gray-100' }} transition-all font-black text-xs uppercase tracking-widest">
-                            <span class="material-icons text-xl">payments</span>
-                            <span>Payments</span>
-                        </a>
+                        <x-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')" class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all">
+                            <span class="material-symbols-rounded text-xl">payments</span>
+                            <span class="font-black text-[10px] uppercase tracking-[0.15em]">Collections</span>
+                        </x-nav-link>
+
+                        @if(Auth::user()->role === 'admin')
+                            <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center space-x-2 px-4 py-2 rounded-xl transition-all">
+                                <span class="material-symbols-rounded text-xl">badge</span>
+                                <span class="font-black text-[10px] uppercase tracking-[0.15em]">Staff</span>
+                            </x-nav-link>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -64,27 +71,27 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center space-x-2 px-4 py-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-all">
-                            <div class="w-8 h-8 rounded-full bg-blue-600 flex items-center justify-center">
-                                <span class="material-icons text-white text-sm">person</span>
+                        <button class="inline-flex items-center space-x-3 px-4 py-2 rounded-2xl bg-slate-50 border border-slate-100 hover:bg-white hover:border-blue-100 transition-all premium-shadow group">
+                            <div class="w-8 h-8 rounded-xl bg-slate-900 flex items-center justify-center group-hover:scale-105 transition-all">
+                                <span class="material-symbols-rounded text-white text-sm">person</span>
                             </div>
                             <div class="text-left hidden lg:block">
-                                <div class="font-black text-[10px] uppercase tracking-widest leading-none">{{ Auth::user()->name }}</div>
-                                <div class="text-[9px] text-gray-400 font-bold uppercase tracking-tighter mt-1">{{ Auth::user()->role }}</div>
+                                <div class="font-black text-[10px] uppercase tracking-widest text-slate-900 leading-none">{{ Auth::user()->name }}</div>
+                                <div class="text-[8px] text-slate-400 font-bold uppercase tracking-tighter mt-1">{{ Auth::user()->role }}</div>
                             </div>
-                            <span class="material-icons text-gray-400">expand_more</span>
+                            <span class="material-symbols-rounded text-slate-300 text-lg group-hover:text-blue-600 transition-colors">expand_more</span>
                         </button>
                     </x-slot>
 
                     <x-slot name="content">
-                        <div class="px-4 py-3 border-b border-gray-100">
-                            <div class="font-black text-xs text-gray-800 uppercase tracking-widest mb-1">{{ Auth::user()->name }}</div>
-                            <div class="text-[10px] text-gray-500 font-bold tracking-tighter">{{ Auth::user()->email }}</div>
+                        <div class="px-5 py-4 border-b border-slate-50">
+                            <div class="font-black text-[10px] text-slate-900 uppercase tracking-[0.2em] mb-1">{{ Auth::user()->name }}</div>
+                            <div class="text-[9px] text-slate-400 font-bold tracking-tighter truncate">{{ Auth::user()->email }}</div>
                         </div>
                         
-                        <x-dropdown-link :href="route('profile.edit')" class="flex items-center space-x-2">
-                            <span class="material-icons text-gray-400 text-sm">settings</span>
-                            <span class="text-xs font-bold uppercase tracking-widest">{{ __('Profile') }}</span>
+                        <x-dropdown-link :href="route('profile.edit')" class="flex items-center space-x-3 px-5 py-3 hover:bg-slate-50 transition-colors">
+                            <span class="material-symbols-rounded text-slate-400 text-base">manage_accounts</span>
+                            <span class="text-[10px] font-black uppercase tracking-widest text-slate-600">Access Identity</span>
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -92,9 +99,9 @@
                             @csrf
                             <x-dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault(); this.closest('form').submit();"
-                                    class="flex items-center space-x-2 text-red-600">
-                                <span class="material-icons text-sm">logout</span>
-                                <span class="text-xs font-bold uppercase tracking-widest">{{ __('Log Out') }}</span>
+                                    class="flex items-center space-x-3 px-5 py-3 hover:bg-rose-50 text-rose-600 transition-colors border-t border-slate-50">
+                                <span class="material-symbols-rounded text-base">logout</span>
+                                <span class="text-[10px] font-black uppercase tracking-widest">Terminate Session</span>
                             </x-dropdown-link>
                         </form>
                     </x-slot>
@@ -103,33 +110,82 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-gray-500 hover:bg-gray-100 transition-all">
-                    <span class="material-icons" x-show="!open">menu</span>
-                    <span class="material-icons" x-show="open" style="display: none;">close</span>
+                <button @click="open = ! open" class="inline-flex items-center justify-center p-3 rounded-2xl text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-all">
+                    <span class="material-symbols-rounded text-2xl" x-show="!open">menu</span>
+                    <span class="material-symbols-rounded text-2xl" x-show="open" style="display: none;">close</span>
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden border-t border-gray-100">
-        <div class="pt-2 pb-3 space-y-1 px-4">
+    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden bg-slate-50 border-t border-slate-100">
+        <div class="pt-4 pb-6 space-y-2 px-4">
             @if(Auth::user()->role === 'super_admin')
-                <a href="{{ route('super-admin.dashboard') }}" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700">
-                    <span class="material-icons">admin_panel_settings</span>
-                    <span class="font-bold text-xs uppercase tracking-widest">Admin Center</span>
-                </a>
-                <a href="{{ route('super-admin.shops.index') }}" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700">
-                    <span class="material-icons">store</span>
-                    <span class="font-bold text-xs uppercase tracking-widest">Manage Shops</span>
-                </a>
+                <x-responsive-nav-link :href="route('super-admin.dashboard')" :active="request()->routeIs('super-admin.dashboard')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl">
+                    <span class="material-symbols-rounded">dashboard</span>
+                    <span class="font-black text-[11px] uppercase tracking-widest">Dashboard</span>
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('super-admin.shops.index')" :active="request()->routeIs('super-admin.shops.*')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl">
+                    <span class="material-symbols-rounded">store</span>
+                    <span class="font-black text-[11px] uppercase tracking-widest">Manage Shops</span>
+                </x-responsive-nav-link>
             @else
-                <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 font-bold text-xs uppercase tracking-widest">
-                    <span class="material-icons">dashboard</span>
-                    <span>Dashboard</span>
-                </a>
-                <!-- Add other responsive links here... -->
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl">
+                    <span class="material-symbols-rounded">dashboard</span>
+                    <span class="font-black text-[11px] uppercase tracking-widest">Overview</span>
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('customers.index')" :active="request()->routeIs('customers.*')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl">
+                    <span class="material-symbols-rounded">groups</span>
+                    <span class="font-black text-[11px] uppercase tracking-widest">Clients</span>
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('loans.index')" :active="request()->routeIs('loans.*')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl">
+                    <span class="material-symbols-rounded">contract</span>
+                    <span class="font-black text-[11px] uppercase tracking-widest">Instruments</span>
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('payments.index')" :active="request()->routeIs('payments.*')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl">
+                    <span class="material-symbols-rounded">payments</span>
+                    <span class="font-black text-[11px] uppercase tracking-widest">Collections</span>
+                </x-responsive-nav-link>
+                @if(Auth::user()->role === 'admin')
+                    <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl">
+                        <span class="material-symbols-rounded">badge</span>
+                        <span class="font-black text-[11px] uppercase tracking-widest">Staff Registry</span>
+                    </x-responsive-nav-link>
+                @endif
             @endif
+        </div>
+
+        <!-- Responsive Settings Options -->
+        <div class="pt-6 pb-6 border-t border-slate-200 px-4">
+            <div class="flex items-center px-6 mb-6">
+                <div class="bg-slate-900 p-2 rounded-xl mr-4">
+                    <span class="material-symbols-rounded text-white text-base">person</span>
+                </div>
+                <div>
+                    <div class="font-black text-[11px] text-slate-900 uppercase tracking-widest">{{ Auth::user()->name }}</div>
+                    <div class="text-[9px] text-slate-500 font-bold italic">{{ Auth::user()->email }}</div>
+                </div>
+            </div>
+
+            <div class="space-y-1">
+                <x-responsive-nav-link :href="route('profile.edit')" class="flex items-center space-x-4 px-6 py-4 rounded-2xl text-slate-600">
+                    <span class="material-symbols-rounded">manage_accounts</span>
+                    <span class="font-black text-[10px] uppercase tracking-widest">Access Identity</span>
+                </x-responsive-nav-link>
+
+                <!-- Authentication -->
+                <form method="POST" action="{{ route('logout') }}">
+                    @csrf
+                    <x-responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault(); this.closest('form').submit();"
+                            class="flex items-center space-x-4 px-6 py-4 rounded-2xl text-rose-600">
+                        <span class="material-symbols-rounded">logout</span>
+                        <span class="font-black text-[10px] uppercase tracking-widest">Terminate Session</span>
+                    </x-responsive-nav-link>
+                </form>
+            </div>
         </div>
     </div>
 </nav>
+

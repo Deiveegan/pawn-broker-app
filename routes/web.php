@@ -40,17 +40,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Customer routes
         Route::resource('customers', \App\Http\Controllers\CustomerController::class);
         
-        // Loan routes
-        Route::resource('loans', \App\Http\Controllers\LoanController::class);
-        Route::get('loans/{loan}/ticket', [\App\Http\Controllers\LoanController::class, 'ticket'])
+        // Instrument routes (formerly loans)
+        Route::resource('instruments', \App\Http\Controllers\LoanController::class)->names('loans');
+        Route::get('instruments/{loan}/ticket', [\App\Http\Controllers\LoanController::class, 'ticket'])
             ->name('loans.ticket');
-        Route::get('loans/{loan}/pawn-ticket', [\App\Http\Controllers\LoanController::class, 'generatePawnTicket'])
+        Route::get('instruments/{loan}/pawn-ticket', [\App\Http\Controllers\LoanController::class, 'generatePawnTicket'])
             ->name('loans.pawn-ticket');
         
-        // Payment routes
-        Route::resource('payments', \App\Http\Controllers\PaymentController::class)
-            ->except(['edit', 'update']);
-        Route::get('payments/{payment}/receipt', [\App\Http\Controllers\PaymentController::class, 'generateReceipt'])
+        // Collection routes (formerly payments)
+        Route::resource('collections', \App\Http\Controllers\PaymentController::class)
+            ->except(['edit', 'update'])->names('payments');
+        Route::get('collections/{payment}/receipt', [\App\Http\Controllers\PaymentController::class, 'generateReceipt'])
             ->name('payments.receipt');
         
         // User management for Shop Admins

@@ -1,130 +1,153 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center space-x-3">
-            <a href="{{ route('payments.index') }}" class="p-2 hover:bg-gray-100 rounded-lg transition-all">
-                <span class="material-icons text-gray-600">arrow_back</span>
-            </a>
-            <span class="material-icons text-green-600 text-3xl">add_card</span>
-            <h2 class="font-semibold text-2xl text-gray-800">
-                {{ __('Record Payment') }}
-            </h2>
+        <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-4">
+                <a href="{{ route('payments.index') }}" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 text-slate-400 hover:text-emerald-600 hover:border-emerald-100 rounded-xl transition-all premium-shadow">
+                    <span class="material-symbols-rounded">arrow_back</span>
+                </a>
+                <div class="bg-emerald-600/10 p-2 rounded-2xl">
+                    <span class="material-symbols-rounded text-emerald-600 text-3xl">payments</span>
+                </div>
+                <div>
+                    <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight">
+                        {{ __('Post Transaction') }}
+                    </h2>
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-widest leading-none mt-1">Acquisition of financial inflows</p>
+                </div>
+            </div>
         </div>
     </x-slot>
 
-    <div class="py-10">
+    <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="md-card elevation-2">
-                <div class="bg-gradient-to-r from-green-600 to-green-700 px-8 py-6">
-                    <h3 class="text-xl font-semibold text-white">Transaction Details</h3>
-                    <p class="text-green-100 text-sm mt-1">Select a loan and enter payment amount</p>
+            <div class="bg-white premium-shadow rounded-[2.5rem] border border-slate-200 overflow-hidden">
+                <!-- Header Area -->
+                <div class="bg-slate-900 px-10 py-10 relative overflow-hidden">
+                    <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-600/20 rounded-full blur-[100px]"></div>
+                    <div class="relative z-10">
+                        <h3 class="text-xl font-black text-white uppercase tracking-widest">Revenue Registration</h3>
+                        <p class="text-slate-400 text-[10px] font-bold uppercase tracking-[0.2em] mt-2 opacity-80 italic">Formal execution of debt servicing or principal reduction</p>
+                    </div>
                 </div>
 
-                <div class="p-8">
-                    <form action="{{ route('payments.store') }}" method="POST" class="space-y-8">
+                <div class="p-0">
+                    <form action="{{ route('payments.store') }}" method="POST">
                         @csrf
 
-                        <!-- Loan Selection -->
-                        <div>
-                            <h4 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
-                                <span class="bg-green-100 text-green-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm font-bold">1</span>
-                                Select Active Loan
-                            </h4>
-                            <div class="relative">
+                        <!-- Section 1: Instrument Linkage -->
+                        <div class="p-10 border-b border-slate-100 bg-slate-50/30">
+                            <div class="flex items-center space-x-3 mb-10">
+                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">01</div>
+                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Protocol Linkage</h4>
+                            </div>
+
+                            <div class="relative group">
                                 <select name="loan_id" id="loan_id" required
-                                    class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors appearance-none bg-white">
-                                    <option value="">Choose Loan Ticket</option>
+                                    class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] focus:ring-4 focus:ring-emerald-600/5 focus:border-emerald-600 transition-all appearance-none bg-white font-extrabold text-slate-900 text-lg premium-shadow">
+                                    <option value="">Locate Active Instrument (Ticket #)</option>
                                     @foreach($loans as $loan)
                                         <option value="{{ $loan->id }}" {{ (isset($loan_id) && $loan_id == $loan->id) || old('loan_id') == $loan->id ? 'selected' : '' }}>
-                                            #{{ $loan->ticket_number }} - {{ $loan->customer->name }} (₹{{ number_format($loan->outstanding_principal, 0) }} O/S)
+                                            #{{ $loan->ticket_number }} - {{ $loan->customer->name }} (O/S: ₹{{ number_format($loan->outstanding_principal, 0) }})
                                         </option>
                                     @endforeach
                                 </select>
-                                <label for="loan_id" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-green-600">
-                                    Loan Ticket <span class="text-red-500">*</span>
+                                <label for="loan_id" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                    Target Loan Instrument <span class="text-rose-600 text-xs">*</span>
                                 </label>
-                                <span class="material-icons absolute right-3 top-4 text-gray-400 pointer-events-none">expand_more</span>
+                                <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none text-2xl">search_insights</span>
                                 @error('loan_id')
-                                    <p class="mt-1.5 text-sm text-red-600 flex items-center"><span class="material-icons text-xs mr-1">error</span>{{ $message }}</p>
+                                    <p class="mt-2 ml-4 text-[10px] text-rose-600 font-bold uppercase tracking-widest flex items-center">
+                                        <span class="material-symbols-rounded text-xs mr-1">warning</span>{{ $message }}
+                                    </p>
                                 @enderror
                             </div>
                         </div>
 
-                        <!-- Payment Info -->
-                        <div>
-                            <h4 class="text-lg font-semibold text-gray-800 mb-6 flex items-center">
-                                <span class="bg-green-100 text-green-600 rounded-full w-8 h-8 flex items-center justify-center mr-3 text-sm font-bold">2</span>
-                                Payment Information
-                            </h4>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div class="relative">
+                        <!-- Section 2: Inflow Parameters -->
+                        <div class="p-10">
+                            <div class="flex items-center space-x-3 mb-10">
+                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">02</div>
+                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Inflow Variables</h4>
+                            </div>
+
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                                <!-- Amount -->
+                                <div class="relative group">
                                     <input type="number" name="amount" id="amount" value="{{ old('amount') }}" required step="0.01" min="0.01"
-                                        class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors placeholder-transparent"
-                                        placeholder="Amount">
-                                    <label for="amount" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-green-600">
-                                        Payment Amount (₹) <span class="text-red-500">*</span>
+                                        class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] focus:ring-4 focus:ring-emerald-600/5 focus:border-emerald-600 transition-all font-black text-3xl text-emerald-600 bg-white premium-shadow"
+                                        placeholder="0.00">
+                                    <label for="amount" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                        Transaction Value (₹) <span class="text-rose-600">*</span>
                                     </label>
+                                    <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none text-2xl">account_balance_wallet</span>
                                     @error('amount')
-                                        <p class="mt-1.5 text-sm text-red-600 flex items-center"><span class="material-icons text-xs mr-1">error</span>{{ $message }}</p>
+                                        <p class="mt-2 ml-4 text-[10px] text-rose-600 font-bold uppercase tracking-widest flex items-center">
+                                            <span class="material-symbols-rounded text-xs mr-1">warning</span>{{ $message }}
+                                        </p>
                                     @enderror
                                 </div>
 
-                                <div class="relative">
+                                <!-- Payment Type -->
+                                <div class="relative group">
                                     <select name="payment_type" id="payment_type" required
-                                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors appearance-none bg-white">
-                                        <option value="interest" {{ old('payment_type') == 'interest' ? 'selected' : '' }}>Interest Payment</option>
-                                        <option value="principal" {{ old('payment_type') == 'principal' ? 'selected' : '' }}>Principal Payment</option>
-                                        <option value="full_settlement" {{ old('payment_type') == 'full_settlement' ? 'selected' : '' }}>Full Settlement</option>
+                                        class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] focus:ring-4 focus:ring-emerald-600/5 focus:border-emerald-600 transition-all appearance-none bg-white font-black text-slate-900 uppercase tracking-widest text-xs premium-shadow">
+                                        <option value="interest" {{ old('payment_type') == 'interest' ? 'selected' : '' }}>Interest Accrual Service</option>
+                                        <option value="principal" {{ old('payment_type') == 'principal' ? 'selected' : '' }}>Principal Reduction</option>
+                                        <option value="full_settlement" {{ old('payment_type') == 'full_settlement' ? 'selected' : '' }}>Full Instrument Liquidation</option>
                                     </select>
-                                    <label for="payment_type" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-green-600">
-                                        Payment Type <span class="text-red-500">*</span>
+                                    <label for="payment_type" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                        Classification <span class="text-rose-600">*</span>
                                     </label>
-                                    <span class="material-icons absolute right-3 top-4 text-gray-400 pointer-events-none">expand_more</span>
+                                    <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">account_tree</span>
                                 </div>
 
-                                <div class="relative">
+                                <!-- Method -->
+                                <div class="relative group">
                                     <select name="payment_method" id="payment_method" required
-                                        class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors appearance-none bg-white">
-                                        <option value="Cash" {{ old('payment_method') == 'Cash' ? 'selected' : '' }}>Cash</option>
-                                        <option value="Online" {{ old('payment_method') == 'Online' ? 'selected' : '' }}>Online Transfer / UPI</option>
-                                        <option value="Cheque" {{ old('payment_method') == 'Cheque' ? 'selected' : '' }}>Cheque</option>
+                                        class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] appearance-none bg-white font-black text-slate-900 uppercase tracking-widest text-[11px] premium-shadow">
+                                        <option value="Cash" {{ old('payment_method') == 'Cash' ? 'selected' : '' }}>Physical Tender (Cash)</option>
+                                        <option value="Online" {{ old('payment_method') == 'Online' ? 'selected' : '' }}>Digital Inflow (UPI/Bank)</option>
+                                        <option value="Cheque" {{ old('payment_method') == 'Cheque' ? 'selected' : '' }}>Negotiable Instrument (Cheque)</option>
                                     </select>
-                                    <label for="payment_method" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-green-600">
-                                        Payment Method <span class="text-red-500">*</span>
+                                    <label for="payment_method" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                        Acquisition Mode <span class="text-rose-600">*</span>
                                     </label>
-                                    <span class="material-icons absolute right-3 top-4 text-gray-400 pointer-events-none">expand_more</span>
+                                    <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">point_of_sale</span>
                                 </div>
 
-                                <div class="relative">
+                                <!-- Date -->
+                                <div class="relative group">
                                     <input type="date" name="payment_date" id="payment_date" value="{{ old('payment_date', date('Y-m-d')) }}" required
-                                        class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors">
-                                    <label for="payment_date" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-green-600">
-                                        Payment Date <span class="text-red-500">*</span>
+                                        class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-white font-black text-slate-900 text-sm premium-shadow">
+                                    <label for="payment_date" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
+                                        Execution Timestamp <span class="text-rose-600">*</span>
                                     </label>
+                                    <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">event_available</span>
                                 </div>
 
-                                <div class="relative">
+                                <!-- Reference -->
+                                <div class="relative group md:col-span-2">
                                     <input type="text" name="transaction_id" id="transaction_id" value="{{ old('transaction_id') }}"
-                                        class="peer md-input w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-green-500 focus:outline-none transition-colors placeholder-transparent"
-                                        placeholder="TXN ID">
-                                    <label for="transaction_id" class="absolute left-3 -top-2.5 bg-white px-2 text-sm font-medium text-gray-600 transition-all peer-placeholder-shown:text-base peer-placeholder-shown:text-gray-400 peer-placeholder-shown:top-3 peer-focus:-top-2.5 peer-focus:text-sm peer-focus:text-green-600">
-                                        Reference / TXN ID (Optional)
+                                        class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-slate-50 italic text-slate-500 font-medium text-sm"
+                                        placeholder="External transaction hash or reference ID...">
+                                    <label for="transaction_id" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                        Operational Reference (Hash)
                                     </label>
+                                    <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-200 pointer-events-none">fingerprint</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="flex items-center justify-end space-x-4 pt-8 border-t border-gray-100">
-                            <a href="{{ route('payments.index') }}" 
-                                class="px-6 py-3 text-gray-700 font-medium rounded-lg hover:bg-gray-100 transition-all">
-                                Cancel
+                        <!-- Footer Actions -->
+                        <div class="p-10 bg-slate-50/80 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-6">
+                            <a href="{{ route('payments.index') }}" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] hover:text-rose-600 transition-colors flex items-center group">
+                                <span class="material-symbols-rounded text-base mr-2 group-hover:shake">cancel</span>
+                                <span>Abort Session</span>
                             </a>
                             <button type="submit" 
-                                class="px-10 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-lg elevation-2 hover:elevation-3 transition-all ripple">
-                                <div class="flex items-center">
-                                    <span class="material-icons mr-2">receipt</span>
-                                    Post Payment
-                                </div>
+                                class="w-full sm:w-auto px-16 py-6 bg-slate-900 text-white font-black rounded-[2.5rem] shadow-2xl shadow-slate-900/20 hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center space-x-3 hover:scale-[1.02]">
+                                <span class="material-symbols-rounded text-xl">receipt_long</span>
+                                <span>Commit Ledger Entry</span>
                             </button>
                         </div>
                     </form>
@@ -132,4 +155,15 @@
             </div>
         </div>
     </div>
+
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-2px); }
+            75% { transform: translateX(2px); }
+        }
+        .group:hover .group-hover\:shake {
+            animation: shake 0.2s ease-in-out infinite;
+        }
+    </style>
 </x-app-layout>

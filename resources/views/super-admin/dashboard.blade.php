@@ -1,97 +1,111 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex items-center space-x-3">
-            <span class="material-icons text-blue-600 text-3xl">admin_panel_settings</span>
-            <h2 class="font-black text-2xl text-gray-800 tracking-tighter uppercase">
-                {{ __('System Controller Dashboard') }}
-            </h2>
+        <div class="flex items-center space-x-4">
+            <div class="bg-blue-600/10 p-2 rounded-2xl">
+                <span class="material-symbols-rounded text-blue-600 text-3xl">admin_panel_settings</span>
+            </div>
+            <div>
+                <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight">
+                    {{ __('Control Center') }}
+                </h2>
+                <p class="text-xs font-medium text-slate-500 uppercase tracking-widest">Global system statistics & management</p>
+            </div>
         </div>
     </x-slot>
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <!-- Global Stats -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                <div class="md-card elevation-2 overflow-hidden border-l-4 border-blue-600">
-                    <div class="p-6">
-                        <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest leading-none">Total Registered Shops</p>
-                        <p class="text-3xl font-black text-blue-600 mt-2">{{ $stats['total_shops'] }}</p>
-                        <div class="mt-4 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase">
-                            <span>Active: {{ $stats['active_shops'] }}</span>
-                            <span class="material-icons text-sm">store</span>
-                        </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div class="bg-white premium-shadow rounded-[2rem] border-b-4 border-blue-600 p-8 hover:transform hover:-translate-y-1 transition-all">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="material-symbols-rounded text-blue-600 bg-blue-50 p-3 rounded-2xl">store</span>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Global Network</span>
+                    </div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">Registered Shops</p>
+                    <div class="flex items-end space-x-2 mt-4">
+                        <p class="text-4xl font-extrabold text-slate-900 tracking-tighter">{{ number_format($stats['total_shops']) }}</p>
+                        <p class="text-sm font-bold text-emerald-600 mb-1 flex items-center">
+                            <span class="material-symbols-rounded text-sm">verified</span>
+                            <span class="ml-1">{{ $stats['active_shops'] }} Active</span>
+                        </p>
                     </div>
                 </div>
 
-                <div class="md-card elevation-2 overflow-hidden border-l-4 border-green-600">
-                    <div class="p-6">
-                        <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest leading-none">Global Customers</p>
-                        <p class="text-3xl font-black text-green-600 mt-2">{{ $stats['total_customers'] }}</p>
-                        <div class="mt-4 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase">
-                            <span>SaaS Network</span>
-                            <span class="material-icons text-sm">groups</span>
-                        </div>
+                <div class="bg-white premium-shadow rounded-[2rem] border-b-4 border-emerald-600 p-8 hover:transform hover:-translate-y-1 transition-all">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="material-symbols-rounded text-emerald-600 bg-emerald-50 p-3 rounded-2xl">groups</span>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Total Reach</span>
                     </div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">Global Clients</p>
+                    <p class="text-4xl font-extrabold text-slate-900 tracking-tighter mt-4">{{ number_format($stats['total_customers']) }}</p>
                 </div>
 
-                <div class="md-card elevation-2 overflow-hidden border-l-4 border-purple-600">
-                    <div class="p-6">
-                        <p class="text-[10px] font-black uppercase text-gray-400 tracking-widest leading-none">Total Loans Managed</p>
-                        <p class="text-3xl font-black text-purple-600 mt-2">{{ $stats['total_loans'] }}</p>
-                        <div class="mt-4 flex items-center justify-between text-[10px] text-gray-400 font-bold uppercase">
-                            <span>Combined Ledger</span>
-                            <span class="material-icons text-sm">receipt_long</span>
-                        </div>
+                <div class="bg-white premium-shadow rounded-[2rem] border-b-4 border-amber-600 p-8 hover:transform hover:-translate-y-1 transition-all">
+                    <div class="flex items-center justify-between mb-4">
+                        <span class="material-symbols-rounded text-amber-600 bg-amber-50 p-3 rounded-2xl">receipt_long</span>
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Combined Ledger</span>
                     </div>
+                    <p class="text-xs font-bold text-slate-500 uppercase tracking-widest leading-none">Total Active Loans</p>
+                    <p class="text-4xl font-extrabold text-slate-900 tracking-tighter mt-4">{{ number_format($stats['total_loans']) }}</p>
                 </div>
 
-                <div class="md-card elevation-2 overflow-hidden border-l-4 border-orange-600 bg-orange-50/10">
-                    <div class="p-6 text-center">
-                        <a href="{{ route('super-admin.shops.create') }}" class="inline-flex flex-col items-center group">
-                            <span class="material-icons text-orange-600 text-4xl group-hover:scale-110 transition-transform">add_business</span>
-                            <span class="text-[10px] font-black uppercase text-orange-600 tracking-widest mt-2">Onboard New Shop</span>
-                        </a>
-                    </div>
+                <div class="bg-slate-900 premium-shadow rounded-[2rem] p-8 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-slate-800 transition-all border-b-4 border-blue-500">
+                    <a href="{{ route('super-admin.shops.create') }}" class="inline-flex flex-col items-center">
+                        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-all shadow-lg shadow-blue-600/20">
+                            <span class="material-symbols-rounded text-white text-3xl">add_business</span>
+                        </div>
+                        <span class="text-[10px] font-black uppercase text-white tracking-[0.2em]">Onboard New Partner</span>
+                        <span class="text-[8px] text-slate-400 font-bold uppercase mt-2">Initialize Environment</span>
+                    </a>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-10">
                 <!-- Recent Shop Activity -->
                 <div class="lg:col-span-2">
-                    <div class="md-card elevation-1 overflow-hidden">
-                        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-                            <h3 class="text-xs font-black text-gray-400 uppercase tracking-widest">Recent Shop Incursions</h3>
-                            <a href="{{ route('super-admin.shops.index') }}" class="text-[10px] font-bold text-blue-600 uppercase tracking-widest">View All</a>
+                    <div class="bg-white premium-shadow rounded-[2.5rem] border border-slate-200 overflow-hidden">
+                        <div class="px-10 py-8 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
+                            <div>
+                                <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">Recent Enrollments</h3>
+                                <p class="text-[10px] text-slate-500 font-bold uppercase mt-1">Latest tenant onboardings</p>
+                            </div>
+                            <a href="{{ route('super-admin.shops.index') }}" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black text-blue-600 uppercase tracking-widest hover:bg-blue-50 transition-colors premium-shadow">View Ecosystem</a>
                         </div>
-                        <div class="divide-y divide-gray-100">
+                        <div class="divide-y divide-slate-100">
                             @foreach($latest_shops as $shop)
-                                <div class="p-6 flex items-center justify-between hover:bg-gray-50 transition-colors">
-                                    <div class="flex items-center space-x-4">
-                                        <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+                                <div class="px-10 py-8 flex items-center justify-between hover:bg-slate-50/80 transition-all duration-300">
+                                    <div class="flex items-center space-x-5">
+                                        <div class="w-14 h-14 rounded-2xl bg-white flex items-center justify-center overflow-hidden border-2 border-slate-100 shadow-sm">
                                             @if($shop->logo)
-                                                <img src="{{ Storage::url($shop->logo) }}" class="w-full h-full object-cover">
+                                                <img src="{{ Storage::url($shop->logo) }}" class="w-full h-full object-contain">
                                             @else
-                                                <span class="material-icons text-gray-400">storefront</span>
+                                                <span class="material-symbols-rounded text-slate-300 text-3xl">store</span>
                                             @endif
                                         </div>
                                         <div>
-                                            <p class="text-sm font-black text-gray-900 uppercase tracking-tighter">{{ $shop->name }}</p>
-                                            <p class="text-[9px] text-gray-400 font-bold uppercase tracking-widest">{{ $shop->created_at->format('d M Y') }}</p>
+                                            <p class="text-base font-extrabold text-slate-900 tracking-tight">{{ $shop->name }}</p>
+                                            <div class="flex items-center space-x-2 mt-1">
+                                                <span class="material-symbols-rounded text-slate-400 text-sm">calendar_today</span>
+                                                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none">{{ $shop->created_at->format('M d, Y') }}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="flex items-center space-x-6 text-right">
-                                        <div>
-                                            <p class="text-xs font-black text-gray-900">{{ $shop->customers_count }}</p>
-                                            <p class="text-[9px] text-gray-400 font-bold uppercase">Clients</p>
+                                    <div class="flex items-center space-x-8">
+                                        <div class="text-center group">
+                                            <p class="text-sm font-black text-slate-900 leading-none">{{ number_format($shop->customers_count) }}</p>
+                                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-tight mt-1">Clients</p>
+                                        </div>
+                                        <div class="text-center group">
+                                            <p class="text-sm font-black text-slate-900 leading-none">{{ number_format($shop->loans_count) }}</p>
+                                            <p class="text-[9px] text-slate-400 font-bold uppercase tracking-tight mt-1">Loans</p>
                                         </div>
                                         <div>
-                                            <p class="text-xs font-black text-gray-900">{{ $shop->loans_count }}</p>
-                                            <p class="text-[9px] text-gray-400 font-bold uppercase">Loans</p>
-                                        </div>
-                                        <div>
-                                            <span class="px-2 py-1 rounded text-[8px] font-black uppercase tracking-widest {{ $shop->is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                                {{ $shop->is_active ? 'Active' : 'Disabled' }}
-                                            </span>
+                                            @if($shop->is_active)
+                                                <span class="w-2.5 h-2.5 bg-emerald-500 border-2 border-white rounded-full block shadow-[0_0_10px_rgba(16,185,129,0.3)]"></span>
+                                            @else
+                                                <span class="w-2.5 h-2.5 bg-rose-500 border-2 border-white rounded-full block shadow-[0_0_10px_rgba(244,63,94,0.3)]"></span>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
@@ -101,27 +115,35 @@
                 </div>
 
                 <!-- System Info -->
-                <div class="lg:col-span-1">
-                    <div class="md-card elevation-1 bg-gradient-to-br from-gray-900 to-black text-white p-8">
-                        <h3 class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-6">Environment Control</h3>
-                        <div class="space-y-6">
-                            <div class="flex items-start space-x-4">
-                                <span class="material-icons text-blue-400">security</span>
+                <div class="lg:col-span-1 space-y-10">
+                    <div class="bg-slate-900 premium-shadow rounded-[2.5rem] p-10 text-white relative overflow-hidden">
+                        <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
+                        <h3 class="text-[11px] font-black text-blue-400 uppercase tracking-[0.2em] mb-10 relative z-10">Environment Shield</h3>
+                        <div class="space-y-10 relative z-10">
+                            <div class="flex items-start space-x-5">
+                                <div class="bg-white/5 p-2 rounded-xl">
+                                    <span class="material-symbols-rounded text-blue-400">security</span>
+                                </div>
                                 <div>
-                                    <p class="text-xs font-black uppercase tracking-tighter">Security Protocol</p>
-                                    <p class="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-tighter">Tenant isolation active via BelongsToShop trait.</p>
+                                    <p class="text-xs font-black uppercase tracking-widest text-white">Advanced Isolation</p>
+                                    <p class="text-[10px] text-slate-400 mt-2 font-medium leading-relaxed uppercase tracking-tighter italic">Multi-tenant logic enforced via automated global scopes.</p>
                                 </div>
                             </div>
-                            <div class="flex items-start space-x-4">
-                                <span class="material-icons text-green-400">speed</span>
+                            <div class="flex items-start space-x-5">
+                                <div class="bg-white/5 p-2 rounded-xl">
+                                    <span class="material-symbols-rounded text-emerald-400">speed</span>
+                                </div>
                                 <div>
-                                    <p class="text-xs font-black uppercase tracking-tighter">System Pulse</p>
-                                    <p class="text-[10px] text-gray-400 mt-1 uppercase font-bold tracking-tighter">Laravel 11 / Vite Framework running optimized.</p>
+                                    <p class="text-xs font-black uppercase tracking-widest text-white">Engine Performance</p>
+                                    <p class="text-[10px] text-slate-400 mt-2 font-medium leading-relaxed uppercase tracking-tighter italic">Vite 6 / Laravel 11 stack running in hyperspace mode.</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-12 pt-12 border-t border-gray-800 text-center">
-                            <p class="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em]">PonNidhi Management Suite v2.0</p>
+                        <div class="mt-16 pt-10 border-t border-white/5 text-center relative z-10">
+                            <div class="flex items-center justify-center space-x-2 text-slate-500">
+                                <div class="w-1.5 h-1.5 bg-blue-500 rounded-full animate-pulse"></div>
+                                <p class="text-[9px] font-black uppercase tracking-[0.3em]">PonNidhi Suite v2.1</p>
+                            </div>
                         </div>
                     </div>
                 </div>

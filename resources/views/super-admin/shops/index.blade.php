@@ -1,86 +1,183 @@
 <x-app-layout>
     <x-slot name="header">
         <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-3">
-                <span class="material-icons text-blue-600 text-3xl">store</span>
-                <h2 class="font-black text-2xl text-gray-800 tracking-tighter uppercase">
-                    {{ __('Partner Shops') }}
-                </h2>
+            <div class="flex items-center space-x-4">
+                <div class="bg-blue-600/10 p-2 rounded-2xl">
+                    <span class="material-symbols-rounded text-blue-600 text-3xl">store</span>
+                </div>
+                <div>
+                    <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight">
+                        {{ __('Tenant Governance') }}
+                    </h2>
+                    <p class="text-xs font-medium text-slate-500 uppercase tracking-widest">Global shop & license management</p>
+                </div>
             </div>
-            <a href="{{ route('super-admin.shops.create') }}" class="md-button px-6 py-2.5 bg-blue-600 text-white rounded-xl elevation-2 hover:elevation-3 flex items-center space-x-2 text-xs">
-                <span class="material-icons text-sm">add_business</span>
-                <span>Onboard New shop</span>
+            <a href="{{ route('super-admin.shops.create') }}" class="px-8 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center space-x-2">
+                <span class="material-symbols-rounded text-lg">add_business</span>
+                <span>Onboard New Tenant</span>
             </a>
         </div>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm rounded-[2rem] border border-gray-100 italic">
-                <table class="w-full text-left">
-                    <thead class="bg-gray-50 border-b border-gray-100">
-                        <tr>
-                            <th class="px-8 py-5 text-[10px] font-black uppercase text-gray-400 tracking-widest">Shop Identity</th>
-                            <th class="px-8 py-5 text-[10px] font-black uppercase text-gray-400 tracking-widest text-center">Stats</th>
-                            <th class="px-8 py-5 text-[10px] font-black uppercase text-gray-400 tracking-widest">Status</th>
-                            <th class="px-8 py-5 text-[10px] font-black uppercase text-gray-400 tracking-widest text-right">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-50">
-                        @foreach($shops as $shop)
-                            <tr class="hover:bg-blue-50/30 transition-colors">
-                                <td class="px-8 py-6">
-                                    <div class="flex items-center space-x-4">
-                                        <div class="w-14 h-14 rounded-2xl bg-white border border-gray-100 p-1 shadow-sm overflow-hidden flex items-center justify-center">
-                                            @if($shop->logo)
-                                                <img src="{{ Storage::url($shop->logo) }}" class="w-full h-full object-contain">
-                                            @else
-                                                <span class="material-icons text-gray-200 text-3xl">image</span>
-                                            @endif
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <!-- Mobile View (Card Based) -->
+            <div class="grid grid-cols-1 gap-6 md:hidden">
+                @foreach($shops as $shop)
+                    <div class="bg-white premium-shadow rounded-[2rem] border border-slate-200 overflow-hidden">
+                        <div class="p-6 border-b border-slate-100 flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 rounded-2xl bg-slate-50 border border-slate-100 p-1">
+                                    @if($shop->logo)
+                                        <img src="{{ Storage::url($shop->logo) }}" class="w-full h-full object-contain">
+                                    @else
+                                        <div class="w-full h-full flex items-center justify-center text-slate-200">
+                                            <span class="material-symbols-rounded text-2xl">image</span>
                                         </div>
-                                        <div>
-                                            <p class="text-lg font-black text-gray-900 tracking-tighter uppercase leading-none">{{ $shop->name }}</p>
-                                            <p class="text-[10px] font-bold text-gray-400 mt-2 uppercase italic leading-tight max-w-xs">{{ $shop->address }}</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-8 py-6">
-                                    <div class="flex items-center justify-center space-x-8">
-                                        <div class="text-center">
-                                            <p class="text-sm font-black text-gray-900 leading-none">{{ $shop->customers_count }}</p>
-                                            <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mt-1">Clients</p>
-                                        </div>
-                                        <div class="text-center">
-                                            <p class="text-sm font-black text-gray-900 leading-none">{{ $shop->loans_count }}</p>
-                                            <p class="text-[8px] font-black text-gray-400 uppercase tracking-widest mt-1">Loans</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-8 py-6">
-                                    <span class="inline-flex px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest {{ $shop->is_active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700' }}">
-                                        {{ $shop->is_active ? 'Authorized' : 'Disabled' }}
-                                    </span>
-                                </td>
-                                <td class="px-8 py-6">
-                                    <div class="flex items-center justify-end space-x-2">
-                                        <form action="{{ route('super-admin.shops.toggle-status', $shop) }}" method="POST">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="p-2 transition-colors rounded-xl {{ $shop->is_active ? 'text-orange-600 hover:bg-orange-50' : 'text-green-600 hover:bg-green-50' }}" title="{{ $shop->is_active ? 'Disable' : 'Enable' }}">
-                                                <span class="material-icons">{{ $shop->is_active ? 'block' : 'check_circle' }}</span>
-                                            </button>
-                                        </form>
-                                        <a href="{{ route('super-admin.shops.edit', $shop) }}" class="p-2 text-blue-600 hover:bg-blue-50 transition-colors rounded-xl">
-                                            <span class="material-icons">edit</span>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class="px-8 py-6 bg-gray-50 border-t border-gray-100">
-                    {{ $shops->links() }}
+                                    @endif
+                                </div>
+                                <div>
+                                    <h4 class="font-black text-slate-900 uppercase text-xs">{{ $shop->name }}</h4>
+                                    <p class="text-[10px] text-slate-400 font-bold mt-1">ID: {{ str_pad($shop->id, 5, '0', STR_PAD_LEFT) }}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="w-2 h-2 rounded-full {{ $shop->is_active ? 'bg-emerald-500' : 'bg-rose-500' }}"></span>
+                                <span class="text-[9px] font-black uppercase text-slate-400">{{ $shop->is_active ? 'Active' : 'Suspended' }}</span>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-slate-50/50">
+                            <div class="flex items-center space-x-2 mb-4">
+                                <span class="material-symbols-rounded text-slate-400 text-sm">mail</span>
+                                <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ $shop->users->first()?->email ?: 'No Admin' }}</p>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-white p-4 rounded-2xl border border-slate-100 text-center">
+                                    <p class="text-[9px] font-black text-slate-400 uppercase">Customers</p>
+                                    <p class="text-xl font-black text-slate-900 mt-1">{{ number_format($shop->customers_count) }}</p>
+                                </div>
+                                <div class="bg-white p-4 rounded-2xl border border-slate-100 text-center">
+                                    <p class="text-[9px] font-black text-slate-400 uppercase">Loans</p>
+                                    <p class="text-xl font-black text-slate-900 mt-1">{{ number_format($shop->loans_count) }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 border-t border-slate-100 grid grid-cols-3 gap-3">
+                            <a href="{{ route('super-admin.shops.show', $shop) }}" class="px-4 py-3 bg-slate-900 text-white rounded-xl text-center text-[10px] font-black uppercase tracking-widest">View</a>
+                            <a href="{{ route('super-admin.shops.edit', $shop) }}" class="px-4 py-3 bg-blue-50 text-blue-600 rounded-xl text-center text-[10px] font-black uppercase tracking-widest">Edit</a>
+                            <form action="{{ route('super-admin.shops.toggle-status', $shop) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit" class="w-full px-4 py-3 {{ $shop->is_active ? 'bg-rose-50 text-rose-600' : 'bg-emerald-50 text-emerald-600' }} rounded-xl text-[10px] font-black uppercase tracking-widest">
+                                    {{ $shop->is_active ? 'Suspend' : 'Active' }}
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+            <!-- Desktop View (Table Based) -->
+            <div class="hidden md:block">
+                <div class="bg-white premium-shadow rounded-[3rem] border border-slate-200 overflow-hidden">
+                    <div class="px-10 py-8 border-b border-slate-100 flex items-center justify-between bg-slate-50/50">
+                        <div>
+                            <h3 class="text-xs font-black text-slate-900 uppercase tracking-widest italic">Global Tenant Registry</h3>
+                            <p class="text-[10px] text-slate-400 font-bold uppercase mt-1">Live monitoring of all registered shops</p>
+                        </div>
+                        <div class="flex items-center space-x-6">
+                            <div class="px-5 py-2 bg-indigo-50 border border-indigo-100 rounded-xl">
+                                <p class="text-[10px] font-black text-indigo-600 uppercase tracking-widest leading-none">Total Nodes: {{ $shops->total() }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-50/50 border-b border-slate-200">
+                                    <th class="px-10 py-6 text-xs font-bold uppercase text-slate-500 tracking-[0.15em]">Shop Identity</th>
+                                    <th class="px-8 py-6 text-xs font-bold uppercase text-slate-500 tracking-[0.15em] text-center">Business Metrics</th>
+                                    <th class="px-8 py-6 text-xs font-bold uppercase text-slate-500 tracking-[0.15em] text-center">System Status</th>
+                                    <th class="px-10 py-6 text-xs font-bold uppercase text-slate-500 tracking-[0.15em] text-right">Operational Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @foreach($shops as $shop)
+                                    <tr class="hover:bg-slate-50/50 transition-all duration-300">
+                                        <td class="px-10 py-8">
+                                             <div class="flex items-center space-x-5">
+                                                 <div class="relative group">
+                                                     <div class="w-16 h-16 rounded-3xl bg-slate-50 border-2 border-slate-100 p-1 shadow-sm overflow-hidden flex items-center justify-center group-hover:border-blue-200 transition-colors">
+                                                         @if($shop->logo)
+                                                             <img src="{{ Storage::url($shop->logo) }}" class="w-full h-full object-contain">
+                                                         @else
+                                                             <span class="material-symbols-rounded text-slate-300 text-4xl">image</span>
+                                                         @endif
+                                                     </div>
+                                                     @if($shop->is_active)
+                                                         <div class="absolute -bottom-1 -right-1 w-5 h-5 bg-emerald-500 border-4 border-white rounded-full"></div>
+                                                     @endif
+                                                 </div>
+                                                 <div>
+                                                     <p class="text-lg font-extrabold text-slate-900 tracking-tight leading-none group-hover:text-blue-600 transition-colors">{{ $shop->name }}</p>
+                                                     <div class="flex flex-col space-y-1 mt-2">
+                                                         <div class="flex items-center space-x-2">
+                                                             <span class="material-symbols-rounded text-slate-400 text-sm">mail</span>
+                                                             <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">{{ $shop->users->first()?->email ?: 'No Admin' }}</p>
+                                                         </div>
+                                                         <div class="flex items-center space-x-2">
+                                                             <span class="material-symbols-rounded text-slate-400 text-xs">person</span>
+                                                             <p class="text-[10px] font-black text-slate-900 uppercase tracking-widest italic">{{ $shop->users->first()?->name ?: 'N/A' }}</p>
+                                                         </div>
+                                                     </div>
+                                                 </div>
+                                             </div>
+                                        </td>
+                                        <td class="px-8 py-8">
+                                            <div class="flex items-center justify-center space-x-8">
+                                                <div class="text-center">
+                                                    <p class="text-xl font-black text-slate-900 leading-none">{{ number_format($shop->customers_count) }}</p>
+                                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-2">Clients</p>
+                                                </div>
+                                                <div class="text-center">
+                                                    <p class="text-xl font-black text-slate-900 leading-none">{{ number_format($shop->loans_count) }}</p>
+                                                    <p class="text-[9px] font-black text-slate-400 uppercase tracking-widest mt-2">Instruments</p>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-8 py-8 text-center">
+                                            <span class="inline-flex px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest {{ $shop->is_active ? 'bg-emerald-50 text-emerald-600 border border-emerald-100' : 'bg-rose-50 text-rose-600 border border-rose-100' }}">
+                                                {{ $shop->is_active ? 'Authorized' : 'Suspended' }}
+                                            </span>
+                                        </td>
+                                        <td class="px-10 py-8 text-right">
+                                             <div class="flex items-center justify-end space-x-3">
+                                                 <a href="{{ route('super-admin.shops.show', $shop) }}" class="w-10 h-10 flex items-center justify-center bg-slate-900 text-white rounded-2xl hover:bg-slate-800 transition-all shadow-lg" title="View Full Profile">
+                                                     <span class="material-symbols-rounded text-xl leading-none">visibility</span>
+                                                 </a>
+                                                 <form action="{{ route('super-admin.shops.toggle-status', $shop) }}" method="POST">
+                                                     @csrf
+                                                     @method('PATCH')
+                                                     <button type="submit" class="w-10 h-10 flex items-center justify-center transition-all rounded-2xl border-2 {{ $shop->is_active ? 'border-amber-100 text-amber-600 hover:bg-amber-50 hover:border-amber-200' : 'border-emerald-100 text-emerald-600 hover:bg-emerald-50 hover:border-emerald-200' }}" title="{{ $shop->is_active ? 'Suspend' : 'Authorize' }}">
+                                                         <span class="material-symbols-rounded text-xl leading-none">@if($shop->is_active)pause_circle @else play_circle @endif</span>
+                                                     </button>
+                                                 </form>
+                                                 <a href="{{ route('super-admin.shops.edit', $shop) }}" class="w-10 h-10 flex items-center justify-center text-slate-400 hover:text-blue-600 hover:bg-blue-50 hover:border-blue-100 border-2 border-slate-50 transition-all rounded-2xl" title="Configure Details">
+                                                     <span class="material-symbols-rounded text-xl leading-none">settings</span>
+                                                 </a>
+                                             </div>
+                                         </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    @if($shops->hasPages())
+                        <div class="px-10 py-8 bg-slate-50 border-t border-slate-100">
+                            {{ $shops->links() }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
