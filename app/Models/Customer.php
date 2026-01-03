@@ -14,12 +14,20 @@ class Customer extends Model
         'email',
         'id_proof_type',
         'id_proof_number',
+        'id_verified',
+        'id_verified_at',
+        'verification_response',
         'address',
         'city',
         'state',
         'pincode',
         'photo',
         'shop_id',
+    ];
+
+    protected $casts = [
+        'id_verified' => 'boolean',
+        'id_verified_at' => 'datetime',
     ];
 
     public function loans()

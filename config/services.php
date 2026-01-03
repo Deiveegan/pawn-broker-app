@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'surepass' => [
+        'token' => env('SUREPASS_API_TOKEN'),
+        'base_url' => env('SUREPASS_BASE_URL', 'https://kyc-api.surepass.io'),
+    ],
+
 ];

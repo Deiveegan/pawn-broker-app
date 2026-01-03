@@ -13,15 +13,30 @@ class ShopController extends Controller
 {
     public function index()
     {
+        $search = request('search');
+        
         $shops = Shop::with(['users' => function($q) {
             $q->where('role', 'admin');
-        }])->withCount(['customers', 'loans'])->latest()->paginate(15);
+        }])
+        ->withCount(['customers', 'loans'])
+        ->when($search, function($query, $search) {
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhereHas('users', function($userQuery) use ($search) {
+                      $userQuery->where('role', 'admin')
+                                ->where('name', 'like', "%{$search}%");
+                  });
+            });
+        })
+        ->latest()
+        ->paginate(15)
+        ->appends(['search' => $search]);
         
         if (request()->expectsJson()) {
             return response()->json($shops);
         }
 
-        return view('super-admin.shops.index', compact('shops'));
+        return view('super-admin.shops.index', compact('shops', 'search'));
     }
 
     public function create()
@@ -37,6 +52,7 @@ class ShopController extends Controller
             'shop_logo' => 'nullable|image|max:2048',
             'admin_name' => 'required|string|max:255',
             'admin_email' => 'required|email|unique:users,email',
+            'admin_mobile' => 'required|string|regex:/^[0-9]{10}$/',
             'admin_password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -48,6 +64,7 @@ class ShopController extends Controller
         $shop = Shop::create([
             'name' => $request->shop_name,
             'address' => $request->shop_address,
+            'mobile' => $request->admin_mobile,
             'logo' => $logoPath,
             'is_active' => true,
         ]);
@@ -82,16 +99,22 @@ class ShopController extends Controller
         return view('super-admin.shops.show', compact('shop'));
     }
 
+    public function edit(Shop $shop)
+    {
+        return view('super-admin.shops.edit', compact('shop'));
+    }
+
     public function update(Request $request, Shop $shop)
     {
         $request->validate([
             'name' => 'required|string|max:255',
             'address' => 'nullable|string',
+            'mobile' => 'nullable|string|regex:/^[0-9]{10}$/',
             'logo' => 'nullable|image|max:2048',
             'is_active' => 'boolean',
         ]);
 
-        $data = $request->only(['name', 'address', 'is_active']);
+        $data = $request->only(['name', 'address', 'mobile', 'is_active']);
 
         if ($request->hasFile('logo')) {
             // Delete old logo

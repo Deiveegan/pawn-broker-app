@@ -55,6 +55,14 @@
                                 <label class="absolute left-4 -top-2.5 bg-white px-2 text-[10px] font-black text-blue-600 uppercase tracking-widest">Physical Address</label>
                             </div>
 
+                            <div class="relative">
+                                <input type="text" name="mobile" id="mobile" value="{{ old('mobile', $shop->mobile) }}"
+                                    pattern="[0-9]{10}"
+                                    maxlength="10"
+                                    class="w-full px-4 py-4 border-2 border-gray-100 rounded-2xl focus:border-blue-600 transition-all font-bold text-sm" placeholder="Eg.  9876543210">
+                                <label class="absolute left-4 -top-2.5 bg-white px-2 text-[10px] font-black text-blue-600 uppercase tracking-widest">Contact Mobile</label>
+                            </div>
+
                             <div class="flex items-center justify-center pt-4">
                                 <label class="inline-flex items-center cursor-pointer group">
                                     <input type="hidden" name="is_active" value="0">

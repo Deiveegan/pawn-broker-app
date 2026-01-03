@@ -12,6 +12,7 @@ class Shop extends Model
     protected $fillable = [
         'name',
         'address',
+        'mobile',
         'logo',
         'is_active',
     ];

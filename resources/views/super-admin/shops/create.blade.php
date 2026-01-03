@@ -92,6 +92,17 @@
                                     <p class="text-rose-600 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider">{{ $message }}</p>
                                 @enderror
                             </div>
+                            <div class="relative group">
+                                <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Contact Mobile Number</label>
+                                <input type="text" name="admin_mobile" id="admin_mobile" required
+                                    value="{{ old('admin_mobile') }}"
+                                    pattern="[0-9]{10}"
+                                    maxlength="10"
+                                    class="w-full px-5 py-4 bg-slate-50 border-2 @error('admin_mobile') border-rose-500 @else border-slate-100 @enderror rounded-2xl focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-600/5 transition-all font-bold text-slate-900" placeholder="Eg. 9876543210">
+                                @error('admin_mobile')
+                                    <p class="text-rose-600 text-[10px] font-bold mt-2 ml-1 uppercase tracking-wider">{{ $message }}</p>
+                                @enderror
+                            </div>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                                 <div class="relative group">
                                     <label class="block text-[10px] font-black text-slate-500 uppercase tracking-widest mb-2 ml-1">Access Password</label>

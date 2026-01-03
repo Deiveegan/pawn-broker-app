@@ -21,9 +21,47 @@
 
     <div class="py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <!-- Search Bar -->
+            <div class="bg-white premium-shadow rounded-[2rem] border border-slate-200 overflow-hidden">
+                <form method="GET" action="{{ route('super-admin.shops.index') }}" class="p-6">
+                    <div class="flex flex-col md:flex-row gap-4">
+                        <div class="flex-1 relative">
+                            <span class="material-symbols-rounded absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                            <input 
+                                type="text" 
+                                name="search" 
+                                value="{{ $search ?? '' }}"
+                                placeholder="Search by shop name or tenant name..." 
+                                class="w-full pl-12 pr-4 py-4 border-2 border-slate-100 rounded-2xl focus:border-blue-600 focus:ring-0 transition-all text-sm font-medium placeholder:text-slate-400"
+                            >
+                        </div>
+                        <div class="flex gap-3">
+                            <button type="submit" class="px-8 py-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20 flex items-center space-x-2">
+                                <span class="material-symbols-rounded text-lg">filter_list</span>
+                                <span>Search</span>
+                            </button>
+                            @if($search)
+                                <a href="{{ route('super-admin.shops.index') }}" class="px-8 py-4 bg-slate-100 text-slate-600 font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-200 transition-all flex items-center space-x-2">
+                                    <span class="material-symbols-rounded text-lg">close</span>
+                                    <span>Clear</span>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
+                    @if($search)
+                        <div class="mt-4 px-4 py-2 bg-blue-50 border border-blue-100 rounded-xl">
+                            <p class="text-xs font-bold text-blue-600">
+                                <span class="material-symbols-rounded text-sm align-middle">info</span>
+                                Showing results for: <span class="font-black italic">"{{ $search }}"</span>
+                            </p>
+                        </div>
+                    @endif
+                </form>
+            </div>
+
             <!-- Mobile View (Card Based) -->
             <div class="grid grid-cols-1 gap-6 md:hidden">
-                @foreach($shops as $shop)
+                @forelse($shops as $shop)
                     <div class="bg-white premium-shadow rounded-[2rem] border border-slate-200 overflow-hidden">
                         <div class="p-6 border-b border-slate-100 flex items-center justify-between">
                             <div class="flex items-center space-x-4">
@@ -74,7 +112,24 @@
                             </form>
                         </div>
                     </div>
-                @endforeach
+                @empty
+                    <div class="bg-white premium-shadow rounded-[2rem] border border-slate-200 overflow-hidden p-12 text-center">
+                        <span class="material-symbols-rounded text-slate-300 text-6xl">search_off</span>
+                        <h3 class="text-lg font-black text-slate-900 mt-4 uppercase tracking-tight">No Tenants Found</h3>
+                        <p class="text-sm text-slate-500 mt-2">
+                            @if($search)
+                                No shops match your search criteria. Try a different search term.
+                            @else
+                                No shops have been registered yet.
+                            @endif
+                        </p>
+                        @if($search)
+                            <a href="{{ route('super-admin.shops.index') }}" class="inline-block mt-6 px-8 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all">
+                                View All Tenants
+                            </a>
+                        @endif
+                    </div>
+                @endforelse
             </div>
 
             <!-- Desktop View (Table Based) -->
@@ -103,7 +158,7 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-slate-100">
-                                @foreach($shops as $shop)
+                                @forelse($shops as $shop)
                                     <tr class="hover:bg-slate-50/50 transition-all duration-300">
                                         <td class="px-10 py-8">
                                              <div class="flex items-center space-x-5">
@@ -169,7 +224,26 @@
                                              </div>
                                          </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="px-10 py-20 text-center">
+                                            <span class="material-symbols-rounded text-slate-300 text-6xl">search_off</span>
+                                            <h3 class="text-lg font-black text-slate-900 mt-4 uppercase tracking-tight">No Tenants Found</h3>
+                                            <p class="text-sm text-slate-500 mt-2">
+                                                @if($search)
+                                                    No shops match your search criteria. Try a different search term.
+                                                @else
+                                                    No shops have been registered yet.
+                                                @endif
+                                            </p>
+                                            @if($search)
+                                                <a href="{{ route('super-admin.shops.index') }}" class="inline-block mt-6 px-8 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all">
+                                                    View All Tenants
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>

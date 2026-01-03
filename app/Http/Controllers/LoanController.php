@@ -210,13 +210,13 @@ class LoanController extends Controller
 
     public function ticket(Loan $loan)
     {
-        $loan->load(['customer', 'items']);
+        $loan->load(['customer', 'items', 'shop']);
         return view('loans.ticket', compact('loan'));
     }
 
     public function generatePawnTicket(Loan $loan)
     {
-        $loan->load(['customer', 'items']);
+        $loan->load(['customer', 'items', 'shop']);
         
         $pdf = Pdf::loadView('pdfs.pawn-ticket', compact('loan'));
         

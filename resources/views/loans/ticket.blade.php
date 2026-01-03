@@ -46,8 +46,18 @@
 
         <!-- Header -->
         <div class="text-center border-b-4 border-gray-900 pb-10 mb-10">
-            <h1 class="text-4xl font-black uppercase tracking-tighter text-gray-900 leading-none">{{ config('app.name', 'Pawn Broker') }}</h1>
+            <h1 class="text-4xl font-black uppercase tracking-tighter text-gray-900 leading-none">{{ $loan->shop->name ?? config('app.name', 'Pawn Broker') }}</h1>
             <p class="text-xs font-black text-gray-400 mt-2 uppercase tracking-[0.3em]">Licensed Pawn Broker & Money Lender</p>
+            @if($loan->shop)
+                <div class="mt-4 text-sm text-gray-600 space-y-1">
+                    @if($loan->shop->address)
+                        <p class="italic">{{ $loan->shop->address }}</p>
+                    @endif
+                    @if($loan->shop->mobile)
+                        <p class="font-bold">Contact: +91 {{ $loan->shop->mobile }}</p>
+                    @endif
+                </div>
+            @endif
             
             <div class="mt-8 flex justify-between items-end bg-gray-50 p-6 rounded-2xl">
                 <div class="text-left">
@@ -114,8 +124,44 @@
             </div>
         </div>
 
-        <!-- Valuation Section -->
-        <div class="mb-12">
+        <!-- Principal Highlight -->
+        <div class="bg-blue-600 text-white rounded-2xl p-8 text-center mb-12 shadow-xl shadow-blue-100 flex items-center justify-between relative overflow-hidden">
+            <div class="absolute left-0 top-0 h-full w-2 bg-blue-700 opacity-50"></div>
+            <div class="text-left relative z-10">
+                <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Principal Amount Advanced</p>
+                <div class="flex items-baseline">
+                    <span class="text-lg font-bold mr-1 opacity-70 italic">₹</span>
+                    <span class="text-5xl font-black font-mono tracking-tighter italic">{{ number_format($loan->principal_amount, 2) }}</span>
+                </div>
+            </div>
+            <div class="text-right relative z-10 hidden md:block">
+                <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Loan-to-Value (LTV)</p>
+                <p class="text-3xl font-black italic">80.0<span class="text-sm opacity-70 mt-1">%</span></p>
+            </div>
+        </div>
+
+        <!-- Pledge Statement -->
+        <div class="mb-12 border-2 border-gray-900 rounded-2xl p-8 bg-gray-50/30">
+            <h3 class="text-center text-[10px] font-black text-gray-400 uppercase tracking-widest mb-6">Pledge Agreement</h3>
+            
+            <div class="text-sm leading-relaxed text-gray-900 space-y-4">
+                <p class="text-justify">
+                    <span class="font-bold">Mr./Ms. {{ $loan->customer->name }}</span>, 
+                    a resident of <span class="italic">{{ $loan->customer->address }}, {{ $loan->customer->city }}, {{ $loan->customer->state }} - {{ $loan->customer->pincode }}</span>, 
+                    for a loan of <span class="font-black">PESOS {{ number_format($loan->principal_amount, 2) }}</span>
+                </p>
+                
+                <p class="text-justify">
+                    (P <span class="border-b border-gray-400 px-2">{{ number_format($loan->principal_amount, 2) }}</span>) 
+                    with an interest of <span class="font-bold">{{ $loan->interest_rate }} percent ({{ $loan->interest_rate }}%)</span> 
+                    for (<span class="border-b border-gray-400 px-2">{{ $loan->loan_period_months }}</span> days/month), 
+                    has pledged to this Pawnee, as security for the loan, article(s) described below appraised at PESOS 
+                    <span class="border-b border-gray-400 px-2">{{ number_format($loan->valuation_amount, 2) }}</span>
+                </p>
+                
+                <div class="bg-white border border-gray-200 rounded-xl p-4 my-4">
+                    <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-3">Pledged Items:</p>
+                     <div class="mb-12">
             <table class="w-full text-left">
                 <thead>
                     <tr class="bg-gray-900 text-white rounded-t-xl overflow-hidden">
@@ -153,20 +199,15 @@
                 </tfoot>
             </table>
         </div>
-
-        <!-- Principal Highlight -->
-        <div class="bg-blue-600 text-white rounded-2xl p-8 text-center mb-12 shadow-xl shadow-blue-100 flex items-center justify-between relative overflow-hidden">
-            <div class="absolute left-0 top-0 h-full w-2 bg-blue-700 opacity-50"></div>
-            <div class="text-left relative z-10">
-                <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Principal Amount Advanced</p>
-                <div class="flex items-baseline">
-                    <span class="text-lg font-bold mr-1 opacity-70 italic">₹</span>
-                    <span class="text-5xl font-black font-mono tracking-tighter italic">{{ number_format($loan->principal_amount, 2) }}</span>
                 </div>
-            </div>
-            <div class="text-right relative z-10 hidden md:block">
-                <p class="text-[10px] font-black uppercase tracking-widest opacity-70 mb-1">Loan-to-Value (LTV)</p>
-                <p class="text-3xl font-black italic">80.0<span class="text-sm opacity-70 mt-1">%</span></p>
+                
+                <p class="text-justify">
+                    (P <span class="border-b border-gray-400 px-2">{{ number_format($loan->valuation_amount, 2) }}</span>) 
+                    subject to the terms and conditions stated on the reverse side hereof. 
+                    <span class="font-bold">Penalty interest, if any: {{ $loan->penalty_rate ?? '0' }}%</span>
+                </p>
+<p class="text-justify">
+                If the loan is not repaid in time, the pawnshop retains the right to sell the item to recover the loan amount.</p>
             </div>
         </div>
 
@@ -180,7 +221,7 @@
             </div>
             <div class="text-center group">
                 <div class="border-t-2 border-gray-900 pt-4 px-4 bg-gray-50/50">
-                    <p class="font-black text-[10px] uppercase tracking-widest text-gray-900">For {{ config('app.name') }}</p>
+                    <p class="font-black text-[10px] uppercase tracking-widest text-gray-900">For {{ $loan->shop->name ?? config('app.name') }}</p>
                     <p class="text-[9px] text-gray-400 mt-2 italic font-bold">Authorized Signatory</p>
                 </div>
             </div>

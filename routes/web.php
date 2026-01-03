@@ -41,7 +41,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('customers', \App\Http\Controllers\CustomerController::class);
         
         // Instrument routes (formerly loans)
-        Route::resource('instruments', \App\Http\Controllers\LoanController::class)->names('loans');
+        Route::resource('instruments', \App\Http\Controllers\LoanController::class)
+            ->parameters(['instruments' => 'loan'])
+            ->names('loans');
         Route::get('instruments/{loan}/ticket', [\App\Http\Controllers\LoanController::class, 'ticket'])
             ->name('loans.ticket');
         Route::get('instruments/{loan}/pawn-ticket', [\App\Http\Controllers\LoanController::class, 'generatePawnTicket'])
@@ -49,7 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         
         // Collection routes (formerly payments)
         Route::resource('collections', \App\Http\Controllers\PaymentController::class)
-            ->except(['edit', 'update'])->names('payments');
+            ->parameters(['collections' => 'payment'])
+            ->except(['edit', 'update'])
+            ->names('payments');
         Route::get('collections/{payment}/receipt', [\App\Http\Controllers\PaymentController::class, 'generateReceipt'])
             ->name('payments.receipt');
         

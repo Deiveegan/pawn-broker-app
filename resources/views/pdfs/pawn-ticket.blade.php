@@ -35,7 +35,16 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="company-name">{{ config('app.name', 'Pawn Broker') }}</h1>
+            @if($loan->shop && $loan->shop->logo)
+                <img src="{{ public_path('storage/' . $loan->shop->logo) }}" alt="Shop Logo" style="max-height: 60px; margin: 0 auto 10px;">
+            @endif
+            <h1 class="company-name">{{ $loan->shop ? $loan->shop->name : config('app.name', 'Pawn Broker') }}</h1>
+            @if($loan->shop && $loan->shop->address)
+                <p style="font-size: 10px; color: #666; margin: 3px 0;">{{ $loan->shop->address }}</p>
+            @endif
+            @if($loan->shop && $loan->shop->mobile)
+                <p style="font-size: 10px; color: #666; margin: 3px 0;">Contact: +91 {{ $loan->shop->mobile }}</p>
+            @endif
             <p class="ticket-title">OFFICIAL PAWN TICKET</p>
             <table style="width: 100%; margin-top: 10px;">
                 <tr>
@@ -113,7 +122,7 @@
                     <div class="sig-box">Signature of Pawner</div>
                 </td>
                 <td width="50%" align="right">
-                    <div class="sig-box" style="margin-left: auto;">For {{ config('app.name') }}</div>
+                    <div class="sig-box" style="margin-left: auto;">For {{ $loan->shop ? $loan->shop->name : config('app.name') }}</div>
                 </td>
             </tr>
         </table>

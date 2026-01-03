@@ -24,18 +24,19 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Super Admin API Routes
 Route::middleware(['auth:sanctum', \App\Http\Middleware\SuperAdminMiddleware::class])
-    ->prefix('super-admin')
+    ->prefix('api/super-admin')
     ->name('api.super-admin.')
     ->group(function () {
         Route::apiResource('shops', ShopController::class);
         Route::patch('shops/{shop}/toggle-status', [ShopController::class, 'toggleStatus']);
     });
 
-// Authenticated API Routes
+// Authenticated API Routes (with api/ prefix to avoid conflicts with web routes)
 Route::middleware('auth:sanctum')
+    ->prefix('api')
     ->name('api.')
     ->group(function () {
         Route::apiResource('customers', CustomerController::class);
-        Route::apiResource('instruments', LoanController::class);
-        Route::apiResource('collections', PaymentController::class)->except(['update']);
+        Route::apiResource('instruments', LoanController::class)->parameters(['instruments' => 'loan']);
+        Route::apiResource('collections', PaymentController::class)->parameters(['collections' => 'payment'])->except(['update']);
     });
