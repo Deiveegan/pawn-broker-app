@@ -22,7 +22,7 @@
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white premium-shadow rounded-[2.5rem] border border-slate-200 overflow-hidden">
                 <!-- Header Area -->
-                <div class="bg-slate-900 px-10 py-10 relative overflow-hidden">
+                <div class="bg-indigo-700 px-10 py-10 relative overflow-hidden">
                     <div class="absolute -top-24 -right-24 w-96 h-96 bg-blue-600/20 rounded-full blur-[100px]"></div>
                     <div class="relative z-10">
                         <h3 class="text-xl font-black text-white uppercase tracking-widest">{{ $customer->name }}</h3>
@@ -38,7 +38,7 @@
                         <!-- Section 1: Demographics -->
                         <div class="p-10 border-b border-slate-100 bg-slate-50/30">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">01</div>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">01</div>
                                 <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Identifying Characteristics</h4>
                             </div>
 
@@ -85,7 +85,7 @@
                         <!-- Section 2: Authentication -->
                         <div class="p-10 border-b border-slate-100">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">02</div>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">02</div>
                                 <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Verification Credentials</h4>
                             </div>
 
@@ -119,7 +119,7 @@
                         <!-- Section 3: Geolocation -->
                         <div class="p-10 border-b border-slate-100 bg-slate-50/30">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">03</div>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">03</div>
                                 <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Geographical Residence</h4>
                             </div>
 
@@ -155,7 +155,7 @@
                         <!-- Section 4: Visual Manifest (Edit Mode) -->
                         <div class="p-10">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">04</div>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">04</div>
                                 <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Biometric Imaging</h4>
                             </div>
 
@@ -198,7 +198,7 @@
                                 <span>Discard Changes</span>
                             </a>
                             <button type="submit" 
-                                class="w-full sm:w-auto px-16 py-6 bg-slate-900 text-white font-black rounded-[2.5rem] shadow-2xl shadow-slate-900/20 hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center space-x-3 hover:scale-[1.02]">
+                                class="w-full sm:w-auto px-16 py-6 bg-indigo-700 text-white font-black rounded-[2.5rem] shadow-2xl shadow-indigo-600/10 hover:bg-indigo-800 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center space-x-3 hover:scale-[1.02]">
                                 <span class="material-symbols-rounded text-xl">save_as</span>
                                 <span>Commit Protocol Update</span>
                             </button>

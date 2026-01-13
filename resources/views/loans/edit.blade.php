@@ -10,7 +10,7 @@
                 </div>
                 <div>
                     <h2 class="font-extrabold text-2xl text-slate-900 tracking-tight">
-                        {{ __('Refine Instrument') }}
+                        {{ __('Edit Loan') }}
                     </h2>
                     <p class="text-xs font-medium text-slate-500 uppercase tracking-widest leading-none mt-1">Ticket #{{ $loan->ticket_number }}</p>
                 </div>
@@ -22,7 +22,7 @@
         <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white premium-shadow rounded-[2.5rem] border border-slate-200 overflow-hidden">
                 <!-- Header Area -->
-                <div class="bg-slate-900 px-10 py-10 relative overflow-hidden">
+                <div class="bg-indigo-700 px-10 py-10 relative overflow-hidden">
                     <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600/20 rounded-full blur-[100px]"></div>
                     <div class="relative z-10 flex items-center justify-between">
                         <div>
@@ -42,11 +42,11 @@
                         @csrf
                         @method('PUT')
 
-                        <!-- Section 1: Financial Recalibration -->
+                        <!-- Section 1: Financial Details -->
                         <div class="p-10 border-b border-slate-100 bg-slate-50/30">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">01</div>
-                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Financial Parameters</h4>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">01</div>
+                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Loan Details</h4>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -60,7 +60,7 @@
                                         <option value="Others" {{ old('loan_type', $loan->loan_type) == 'Others' ? 'selected' : '' }}>Miscellaneous Collateral</option>
                                     </select>
                                     <label for="loan_type" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">
-                                        Collateral Class <span class="text-rose-600">*</span>
+                                        Item Type <span class="text-rose-600">*</span>
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">inventory_2</span>
                                 </div>
@@ -70,7 +70,7 @@
                                     <input type="number" value="{{ $loan->principal_amount }}" readonly
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-slate-100 font-black text-3xl text-slate-400 cursor-not-allowed italic">
                                     <label class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                        Immutable Principal (₹)
+                                        Principal Amount (₹)
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-200 pointer-events-none text-2xl">lock</span>
                                 </div>
@@ -86,7 +86,7 @@
                                         @endforeach
                                     </select>
                                     <label for="interest_rate" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">
-                                        Periodic Accrual % <span class="text-rose-600">*</span>
+                                        Interest Rate % <span class="text-rose-600">*</span>
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">trending_up</span>
                                 </div>
@@ -99,7 +99,7 @@
                                         <option value="Reducing" {{ old('interest_type', $loan->interest_type) == 'Reducing' ? 'selected' : '' }}>Diminishing Balance</option>
                                     </select>
                                     <label for="interest_type" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">
-                                        Amortization Logic <span class="text-rose-600">*</span>
+                                        Interest Type <span class="text-rose-600">*</span>
                                     </label>
                                 </div>
 
@@ -109,18 +109,18 @@
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] focus:ring-4 focus:ring-indigo-600/5 focus:border-indigo-600 transition-all bg-white font-black text-slate-900 text-lg premium-shadow"
                                         placeholder="0">
                                     <label for="loan_period_months" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">
-                                        Temporal Window (Months) <span class="text-rose-600">*</span>
+                                        Loan Period (Months) <span class="text-rose-600">*</span>
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">timelapse</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Section 2: Operational Constants -->
+                        <!-- Section 2: Other Details -->
                         <div class="p-10 border-b border-slate-100">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">02</div>
-                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Operational Metadata</h4>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">02</div>
+                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Loan Status & Dates</h4>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -129,7 +129,7 @@
                                     <input type="date" name="loan_date" id="loan_date" value="{{ old('loan_date', $loan->loan_date->format('Y-m-d')) }}" required
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-white font-black text-slate-900 text-sm premium-shadow">
                                     <label for="loan_date" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">
-                                        Origination Timestamp <span class="text-rose-600">*</span>
+                                        Loan Date <span class="text-rose-600">*</span>
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">calendar_month</span>
                                 </div>
@@ -144,7 +144,7 @@
                                         <option value="Auctioned" {{ old('status', $loan->status) == 'Auctioned' ? 'selected' : '' }}>Liquidation Executed (Auctioned)</option>
                                     </select>
                                     <label for="status" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-rose-600 uppercase tracking-widest">
-                                        Protocol Status <span class="text-rose-600">*</span>
+                                        Loan Status <span class="text-rose-600">*</span>
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none text-2xl">sensors</span>
                                 </div>
@@ -155,18 +155,18 @@
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-slate-50 font-bold text-slate-600 text-lg"
                                         placeholder="0.00">
                                     <label for="penalty_rate" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                        Non-Compliance Penalty %
+                                        Penalty %
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-200 pointer-events-none">gavel</span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Section 3: Article Manifest -->
+                        <!-- Section 3: Jewellery Details -->
                         <div class="p-10 bg-slate-50/30">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">03</div>
-                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Article Manifest</h4>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">03</div>
+                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Jewellery Details</h4>
                             </div>
 
                             @php $item = $loan->items->first(); @endphp
@@ -176,21 +176,21 @@
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] focus:ring-4 focus:ring-indigo-600/5 focus:border-indigo-600 transition-all bg-white font-medium text-slate-900 text-sm premium-shadow resize-none italic"
                                         placeholder="Detailed physical characteristics and identification marks...">{{ old('item_description', $item->description ?? '') }}</textarea>
                                     <label for="item_description" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">
-                                        Technical Description <span class="text-rose-600">*</span>
+                                        Item Description <span class="text-rose-600">*</span>
                                     </label>
                                 </div>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
                                     <div class="relative group">
                                         <input type="number" name="item_weight" id="item_weight" value="{{ old('item_weight', $item->weight ?? '') }}" step="0.001" min="0"
                                             class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-white font-black text-slate-900 text-lg premium-shadow">
-                                        <label for="item_weight" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">Measured Mass (gms)</label>
+                                        <label for="item_weight" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">Weight (gms)</label>
                                         <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">monitor_weight</span>
                                     </div>
                                     <div class="relative group">
                                         <input type="text" name="item_purity" id="item_purity" value="{{ old('item_purity', $item->purity ?? '') }}"
                                             class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-white font-black text-indigo-600 text-lg premium-shadow tracking-widest"
                                             placeholder="Standard Purity...">
-                                        <label for="item_purity" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">Elemental Purity</label>
+                                        <label for="item_purity" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-indigo-600 uppercase tracking-widest">Purity</label>
                                         <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">diamond</span>
                                     </div>
                                 </div>
@@ -199,14 +199,14 @@
 
                         <!-- Footer Actions -->
                         <div class="p-10 bg-slate-50/80 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-6">
-                            <a href="{{ route('loans.index') }}" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] hover:text-rose-600 transition-colors flex items-center group">
+                             <a href="{{ route('loans.index') }}" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] hover:text-rose-600 transition-colors flex items-center group">
                                 <span class="material-symbols-rounded text-base mr-2 group-hover:shake">cancel</span>
-                                <span>Abort Session</span>
+                                <span>Cancel</span>
                             </a>
                             <button type="submit" 
-                                class="w-full sm:w-auto px-16 py-6 bg-slate-900 text-white font-black rounded-[2.5rem] shadow-2xl shadow-slate-900/20 hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center space-x-3 hover:scale-[1.02]">
+                                class="w-full sm:w-auto px-16 py-6 bg-indigo-700 text-white font-black rounded-[2.5rem] shadow-2xl shadow-indigo-600/10 hover:bg-indigo-800 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center space-x-3 hover:scale-[1.02]">
                                 <span class="material-symbols-rounded text-xl">docs_add_on</span>
-                                <span>Commit Protocol refinement</span>
+                                <span>Update Loan</span>
                             </button>
                         </div>
                     </form>

@@ -50,9 +50,9 @@
                     <p class="text-4xl font-extrabold text-slate-900 tracking-tighter mt-4">{{ number_format($stats['total_loans']) }}</p>
                 </div>
 
-                <div class="bg-slate-900 premium-shadow rounded-[2rem] p-8 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-slate-800 transition-all border-b-4 border-blue-500">
+                <div class="bg-indigo-700 premium-shadow rounded-[2rem] p-8 flex flex-col items-center justify-center text-center group cursor-pointer hover:bg-indigo-800 transition-all border-b-4 border-blue-500">
                     <a href="{{ route('super-admin.shops.create') }}" class="inline-flex flex-col items-center">
-                        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-all shadow-lg shadow-blue-600/20">
+                        <div class="w-16 h-16 bg-blue-600 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-all shadow-lg shadow-indigo-600/10">
                             <span class="material-symbols-rounded text-white text-3xl">add_business</span>
                         </div>
                         <span class="text-[10px] font-black uppercase text-white tracking-[0.2em]">Onboard New Partner</span>
@@ -70,7 +70,7 @@
                                 <h3 class="text-sm font-black text-slate-900 uppercase tracking-widest">Recent Enrollments</h3>
                                 <p class="text-[10px] text-slate-500 font-bold uppercase mt-1">Latest tenant onboardings</p>
                             </div>
-                            <a href="{{ route('super-admin.shops.index') }}" class="px-4 py-2 bg-white border border-slate-200 rounded-xl text-[10px] font-black text-blue-600 uppercase tracking-widest hover:bg-blue-50 transition-colors premium-shadow">View Ecosystem</a>
+                            <a href="{{ route('super-admin.shops.index') }}" class="btn-premium btn-premium-secondary">View Ecosystem</a>
                         </div>
                         <div class="divide-y divide-slate-100">
                             @foreach($latest_shops as $shop)
@@ -116,7 +116,7 @@
 
                 <!-- System Info -->
                 <div class="lg:col-span-1 space-y-10">
-                    <div class="bg-slate-900 premium-shadow rounded-[2.5rem] p-10 text-white relative overflow-hidden">
+                    <div class="bg-indigo-700 premium-shadow rounded-[2.5rem] p-10 text-white relative overflow-hidden">
                         <div class="absolute -top-10 -right-10 w-40 h-40 bg-blue-600/10 rounded-full blur-3xl"></div>
                         <h3 class="text-[11px] font-black text-blue-400 uppercase tracking-[0.2em] mb-10 relative z-10">Environment Shield</h3>
                         <div class="space-y-10 relative z-10">

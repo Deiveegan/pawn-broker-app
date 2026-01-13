@@ -12,8 +12,8 @@
                     <p class="text-xs font-medium text-slate-500 uppercase tracking-widest">Global shop & license management</p>
                 </div>
             </div>
-            <a href="{{ route('super-admin.shops.create') }}" class="px-8 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center space-x-2">
-                <span class="material-symbols-rounded text-lg">add_business</span>
+            <a href="{{ route('super-admin.shops.create') }}" class="btn-premium btn-premium-primary">
+                <span class="material-symbols-rounded text-lg mr-2">add_business</span>
                 <span>Onboard New Tenant</span>
             </a>
         </div>
@@ -36,13 +36,13 @@
                             >
                         </div>
                         <div class="flex gap-3">
-                            <button type="submit" class="px-8 py-4 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/20 flex items-center space-x-2">
-                                <span class="material-symbols-rounded text-lg">filter_list</span>
+                            <button type="submit" class="btn-premium btn-premium-primary">
+                                <span class="material-symbols-rounded text-lg mr-2">filter_list</span>
                                 <span>Search</span>
                             </button>
                             @if($search)
-                                <a href="{{ route('super-admin.shops.index') }}" class="px-8 py-4 bg-slate-100 text-slate-600 font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-200 transition-all flex items-center space-x-2">
-                                    <span class="material-symbols-rounded text-lg">close</span>
+                                <a href="{{ route('super-admin.shops.index') }}" class="btn-premium btn-premium-secondary">
+                                    <span class="material-symbols-rounded text-lg mr-2">close</span>
                                     <span>Clear</span>
                                 </a>
                             @endif
@@ -101,7 +101,7 @@
                             </div>
                         </div>
                         <div class="p-6 border-t border-slate-100 grid grid-cols-3 gap-3">
-                            <a href="{{ route('super-admin.shops.show', $shop) }}" class="px-4 py-3 bg-slate-900 text-white rounded-xl text-center text-[10px] font-black uppercase tracking-widest">View</a>
+                            <a href="{{ route('super-admin.shops.show', $shop) }}" class="px-4 py-3 bg-indigo-700 text-white rounded-xl text-center text-[10px] font-black uppercase tracking-widest">View</a>
                             <a href="{{ route('super-admin.shops.edit', $shop) }}" class="px-4 py-3 bg-blue-50 text-blue-600 rounded-xl text-center text-[10px] font-black uppercase tracking-widest">Edit</a>
                             <form action="{{ route('super-admin.shops.toggle-status', $shop) }}" method="POST" class="inline">
                                 @csrf
@@ -124,7 +124,7 @@
                             @endif
                         </p>
                         @if($search)
-                            <a href="{{ route('super-admin.shops.index') }}" class="inline-block mt-6 px-8 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all">
+                            <a href="{{ route('super-admin.shops.index') }}" class="inline-block mt-6 px-8 py-3 bg-indigo-700 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-indigo-800 transition-all">
                                 View All Tenants
                             </a>
                         @endif
@@ -208,7 +208,7 @@
                                         </td>
                                         <td class="px-10 py-8 text-right">
                                              <div class="flex items-center justify-end space-x-3">
-                                                 <a href="{{ route('super-admin.shops.show', $shop) }}" class="w-10 h-10 flex items-center justify-center bg-slate-900 text-white rounded-2xl hover:bg-slate-800 transition-all shadow-lg" title="View Full Profile">
+                                                 <a href="{{ route('super-admin.shops.show', $shop) }}" class="w-10 h-10 flex items-center justify-center bg-indigo-700 text-white rounded-2xl hover:bg-indigo-800 transition-all shadow-lg" title="View Full Profile">
                                                      <span class="material-symbols-rounded text-xl leading-none">visibility</span>
                                                  </a>
                                                  <form action="{{ route('super-admin.shops.toggle-status', $shop) }}" method="POST">
@@ -237,7 +237,7 @@
                                                 @endif
                                             </p>
                                             @if($search)
-                                                <a href="{{ route('super-admin.shops.index') }}" class="inline-block mt-6 px-8 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all">
+                                                <a href="{{ route('super-admin.shops.index') }}" class="inline-block mt-6 px-8 py-3 bg-indigo-700 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-indigo-800 transition-all">
                                                     View All Tenants
                                                 </a>
                                             @endif

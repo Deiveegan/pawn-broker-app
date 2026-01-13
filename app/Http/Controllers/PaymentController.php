@@ -62,7 +62,7 @@ class PaymentController extends Controller
 
     public function show(Payment $payment)
     {
-        $payment->load('loan.customer');
+        $payment->load(['loan.customer', 'shop']);
         
         if (request()->expectsJson()) {
             return response()->json($payment);
@@ -85,7 +85,7 @@ class PaymentController extends Controller
 
     public function generateReceipt(Payment $payment)
     {
-        $payment->load('loan.customer');
+        $payment->load(['loan.customer', 'shop']);
         
         $pdf = Pdf::loadView('pdfs.payment-receipt', compact('payment'));
         

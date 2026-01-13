@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="flex items-center space-x-3">
-                <a href="{{ route('super-admin.shops.edit', $shop) }}" class="px-6 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center space-x-2">
+                <a href="{{ route('super-admin.shops.edit', $shop) }}" class="px-6 py-3 bg-indigo-700 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-indigo-800 transition-all shadow-xl shadow-indigo-600/20 flex items-center space-x-2">
                     <span class="material-symbols-rounded text-base">settings</span>
                     <span>Adjust Parameters</span>
                 </a>
@@ -30,7 +30,7 @@
                 <!-- Shop Profile Sidebar -->
                 <div class="lg:col-span-1 space-y-10">
                     <div class="bg-white premium-shadow rounded-[3rem] border border-slate-200 overflow-hidden relative group">
-                        <div class="h-32 bg-slate-900"></div>
+                        <div class="h-32 bg-indigo-700"></div>
                         <div class="px-8 pb-10 text-center relative">
                             <div class="relative -mt-16 mb-6 inline-block">
                                 @if($shop->logo)
@@ -72,7 +72,7 @@
                     </div>
 
                     <!-- Administrator Details -->
-                    <div class="bg-slate-900 premium-shadow rounded-[2.5rem] p-8 text-white relative overflow-hidden">
+                    <div class="bg-indigo-700 premium-shadow rounded-[2.5rem] p-8 text-white relative overflow-hidden">
                         <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
                         <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 relative z-10">Assigned Administrator</h4>
                         @php $admin = $shop->users->first(); @endphp
@@ -114,7 +114,7 @@
                                 <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Cumulative Client Base</p>
                                 <div class="flex items-end justify-between">
                                     <p class="text-5xl font-black text-slate-900 italic tracking-tighter">{{ number_format($shop->customers_count) }}</p>
-                                    <div class="w-12 h-12 bg-slate-900 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-slate-900/20">
+                                    <div class="w-12 h-12 bg-indigo-700 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-indigo-600/20">
                                         <span class="material-symbols-rounded text-xl">groups</span>
                                     </div>
                                 </div>

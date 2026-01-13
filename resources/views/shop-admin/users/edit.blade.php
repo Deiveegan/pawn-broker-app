@@ -106,7 +106,7 @@
                     </div>
 
                     <div class="pt-6">
-                        <button type="submit" class="w-full py-5 bg-slate-900 text-white font-black text-xs uppercase tracking-[0.3em] rounded-[2rem] hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 active:scale-[0.98]">
+                        <button type="submit" class="w-full py-5 bg-indigo-700 text-white font-black text-xs uppercase tracking-[0.3em] rounded-[2rem] hover:bg-indigo-800 transition-all shadow-xl shadow-indigo-600/10 active:scale-[0.98]">
                             Commit Adjustments
                         </button>
                     </div>

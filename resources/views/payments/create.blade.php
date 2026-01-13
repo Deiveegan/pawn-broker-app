@@ -22,7 +22,7 @@
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white premium-shadow rounded-[2.5rem] border border-slate-200 overflow-hidden">
                 <!-- Header Area -->
-                <div class="bg-slate-900 px-10 py-10 relative overflow-hidden">
+                <div class="bg-indigo-700 px-10 py-10 relative overflow-hidden">
                     <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-600/20 rounded-full blur-[100px]"></div>
                     <div class="relative z-10">
                         <h3 class="text-xl font-black text-white uppercase tracking-widest">Revenue Registration</h3>
@@ -37,14 +37,14 @@
                         <!-- Section 1: Instrument Linkage -->
                         <div class="p-10 border-b border-slate-100 bg-slate-50/30">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">01</div>
-                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Protocol Linkage</h4>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">01</div>
+                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Details</h4>
                             </div>
 
                             <div class="relative group">
                                 <select name="loan_id" id="loan_id" required
                                     class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] focus:ring-4 focus:ring-emerald-600/5 focus:border-emerald-600 transition-all appearance-none bg-white font-extrabold text-slate-900 text-lg premium-shadow">
-                                    <option value="">Locate Active Instrument (Ticket #)</option>
+                                    <option value="">Search Ticket #</option>
                                     @foreach($loans as $loan)
                                         <option value="{{ $loan->id }}" {{ (isset($loan_id) && $loan_id == $loan->id) || old('loan_id') == $loan->id ? 'selected' : '' }}>
                                             #{{ $loan->ticket_number }} - {{ $loan->customer->name }} (O/S: ₹{{ number_format($loan->outstanding_principal, 0) }})
@@ -52,7 +52,7 @@
                                     @endforeach
                                 </select>
                                 <label for="loan_id" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                                    Target Loan Instrument <span class="text-rose-600 text-xs">*</span>
+                                    Select Loan Ticket <span class="text-rose-600 text-xs">*</span>
                                 </label>
                                 <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none text-2xl">search_insights</span>
                                 @error('loan_id')
@@ -66,8 +66,8 @@
                         <!-- Section 2: Inflow Parameters -->
                         <div class="p-10">
                             <div class="flex items-center space-x-3 mb-10">
-                                <div class="w-8 h-8 rounded-full bg-slate-900 flex items-center justify-center text-white text-xs font-black">02</div>
-                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Inflow Variables</h4>
+                                <div class="w-8 h-8 rounded-full bg-indigo-700 flex items-center justify-center text-white text-xs font-black">02</div>
+                                <h4 class="text-sm font-black text-slate-900 uppercase tracking-widest">Payment Details</h4>
                             </div>
 
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
@@ -93,10 +93,10 @@
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] focus:ring-4 focus:ring-emerald-600/5 focus:border-emerald-600 transition-all appearance-none bg-white font-black text-slate-900 uppercase tracking-widest text-xs premium-shadow">
                                         <option value="interest" {{ old('payment_type') == 'interest' ? 'selected' : '' }}>Interest Accrual Service</option>
                                         <option value="principal" {{ old('payment_type') == 'principal' ? 'selected' : '' }}>Principal Reduction</option>
-                                        <option value="full_settlement" {{ old('payment_type') == 'full_settlement' ? 'selected' : '' }}>Full Instrument Liquidation</option>
+                                        <option value="full_settlement" {{ old('payment_type') == 'full_settlement' ? 'selected' : '' }}>Full Settlement</option>
                                     </select>
                                     <label for="payment_type" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                                        Classification <span class="text-rose-600">*</span>
+                                        Payment For <span class="text-rose-600">*</span>
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">account_tree</span>
                                 </div>
@@ -107,10 +107,10 @@
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] appearance-none bg-white font-black text-slate-900 uppercase tracking-widest text-[11px] premium-shadow">
                                         <option value="Cash" {{ old('payment_method') == 'Cash' ? 'selected' : '' }}>Physical Tender (Cash)</option>
                                         <option value="Online" {{ old('payment_method') == 'Online' ? 'selected' : '' }}>Digital Inflow (UPI/Bank)</option>
-                                        <option value="Cheque" {{ old('payment_method') == 'Cheque' ? 'selected' : '' }}>Negotiable Instrument (Cheque)</option>
+                                        <option value="Cheque" {{ old('payment_method') == 'Cheque' ? 'selected' : '' }}>Cheque</option>
                                     </select>
                                     <label for="payment_method" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-emerald-600 uppercase tracking-widest">
-                                        Acquisition Mode <span class="text-rose-600">*</span>
+                                        Payment Mode <span class="text-rose-600">*</span>
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none">point_of_sale</span>
                                 </div>
@@ -131,7 +131,7 @@
                                         class="w-full px-8 py-6 border border-slate-200 rounded-[2rem] bg-slate-50 italic text-slate-500 font-medium text-sm"
                                         placeholder="External transaction hash or reference ID...">
                                     <label for="transaction_id" class="absolute left-8 -top-2.5 bg-white px-2 text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                        Operational Reference (Hash)
+                                        Payment Reference (ID)
                                     </label>
                                     <span class="material-symbols-rounded absolute right-8 top-1/2 -translate-y-1/2 text-slate-200 pointer-events-none">fingerprint</span>
                                 </div>
@@ -140,14 +140,13 @@
 
                         <!-- Footer Actions -->
                         <div class="p-10 bg-slate-50/80 border-t border-slate-100 flex flex-col sm:flex-row justify-between items-center gap-6">
-                            <a href="{{ route('payments.index') }}" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.25em] hover:text-rose-600 transition-colors flex items-center group">
-                                <span class="material-symbols-rounded text-base mr-2 group-hover:shake">cancel</span>
+                            <a href="{{ route('payments.index') }}" class="btn-premium btn-premium-secondary">
+                                <span class="material-symbols-rounded text-base mr-2">cancel</span>
                                 <span>Abort Session</span>
                             </a>
-                            <button type="submit" 
-                                class="w-full sm:w-auto px-16 py-6 bg-slate-900 text-white font-black rounded-[2.5rem] shadow-2xl shadow-slate-900/20 hover:bg-slate-800 transition-all uppercase tracking-[0.2em] text-[11px] flex items-center justify-center space-x-3 hover:scale-[1.02]">
-                                <span class="material-symbols-rounded text-xl">receipt_long</span>
-                                <span>Commit Ledger Entry</span>
+                            <button type="submit" class="btn-premium btn-premium-primary px-16">
+                                <span class="material-symbols-rounded text-xl mr-2">receipt_long</span>
+                                <span>Save Payment</span>
                             </button>
                         </div>
                     </form>

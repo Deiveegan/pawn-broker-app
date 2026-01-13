@@ -8,12 +8,44 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Outfit:wght@400;700;900&display=swap');
         @media print {
             .no-print { display: none !important; }
-            body { padding: 0; background: white; }
-            .print-container { border: none; shadow: none; width: 100%; max-width: none; margin: 0; padding: 0; }
+            body { padding: 0 !important; margin: 0 !important; background: white !important; }
+            .print-container { 
+                border: none !important; 
+                box-shadow: none !important; 
+                width: 100% !important; 
+                max-width: none !important; 
+                margin: 0 !important; 
+                padding: 0.8cm !important;
+                background: white !important;
+                min-height: 297mm;
+                box-sizing: border-box !important;
+            }
+            .grid { gap: 0.5rem !important; }
+            .mb-12, .mb-10, .mb-8, .mb-6 { margin-bottom: 0.5rem !important; }
+            .mt-24 { margin-top: 1.5rem !important; }
+            .mt-20 { margin-top: 1rem !important; }
+            .pt-10, .py-10, .p-12, .p-10, .p-8 { padding-bottom: 0.5rem !important; padding-top: 0.5rem !important; padding-left: 1rem !important; padding-right: 1rem !important; }
+            .pb-10 { padding-bottom: 0.5rem !important; }
+            .gap-16, .gap-32 { gap: 1rem !important; }
+            h1 { font-size: 1.6rem !important; margin-bottom: 0.2rem !important; }
+            h2 { font-size: 0.9rem !important; margin-bottom: 0.2rem !important; }
+            .text-4xl { font-size: 1.6rem !important; }
+            .text-3xl { font-size: 1.3rem !important; }
+            .text-2xl { font-size: 1.1rem !important; }
+            .text-5xl { font-size: 2rem !important; }
+            .text-sm { font-size: 0.75rem !important; }
+            .text-xs { font-size: 0.65rem !important; }
+            .print-hidden-mobile { display: block !important; }
+            .watermark { display: none !important; }
         }
-        @page { size: A4; margin: 1cm; }
+        @page { 
+            size: A4; 
+            margin: 0; 
+        }
+        body { font-family: 'Outfit', sans-serif; }
         .font-mono { font-family: 'Roboto Mono', monospace; }
         .font-black { font-weight: 900; }
     </style>
@@ -40,7 +72,7 @@
     <!-- Ticket Container -->
     <div class="max-w-4xl mx-auto bg-white shadow-2xl border border-gray-100 p-12 print-container relative overflow-hidden">
         <!-- Watermark/Background Decoration -->
-        <div class="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none">
+        <div class="absolute top-0 right-0 p-12 opacity-[0.03] pointer-events-none watermark">
             <span class="material-icons text-[300px]">verified_user</span>
         </div>
 
@@ -148,14 +180,14 @@
                 <p class="text-justify">
                     <span class="font-bold">Mr./Ms. {{ $loan->customer->name }}</span>, 
                     a resident of <span class="italic">{{ $loan->customer->address }}, {{ $loan->customer->city }}, {{ $loan->customer->state }} - {{ $loan->customer->pincode }}</span>, 
-                    for a loan of <span class="font-black">PESOS {{ number_format($loan->principal_amount, 2) }}</span>
+                    for a loan of <span class="font-black">RUPEES {{ number_format($loan->principal_amount, 2) }}</span>
                 </p>
                 
                 <p class="text-justify">
-                    (P <span class="border-b border-gray-400 px-2">{{ number_format($loan->principal_amount, 2) }}</span>) 
-                    with an interest of <span class="font-bold">{{ $loan->interest_rate }} percent ({{ $loan->interest_rate }}%)</span> 
-                    for (<span class="border-b border-gray-400 px-2">{{ $loan->loan_period_months }}</span> days/month), 
-                    has pledged to this Pawnee, as security for the loan, article(s) described below appraised at PESOS 
+                    (₹ <span class="border-b border-gray-400 px-2">{{ number_format($loan->principal_amount, 2) }}</span>) 
+                    with an interest of <span class="font-bold">{{ (float)$loan->interest_rate }} percent ({{ (float)$loan->interest_rate }}%)</span> 
+                    for (<span class="border-b border-gray-400 px-2">{{ $loan->loan_period_months }}</span> months), 
+                    has pledged to this Pawnee, as security for the loan, article(s) described below appraised at RUPEES 
                     <span class="border-b border-gray-400 px-2">{{ number_format($loan->valuation_amount, 2) }}</span>
                 </p>
                 
@@ -202,7 +234,7 @@
                 </div>
                 
                 <p class="text-justify">
-                    (P <span class="border-b border-gray-400 px-2">{{ number_format($loan->valuation_amount, 2) }}</span>) 
+                    (₹ <span class="border-b border-gray-400 px-2">{{ number_format($loan->valuation_amount, 2) }}</span>) 
                     subject to the terms and conditions stated on the reverse side hereof. 
                     <span class="font-bold">Penalty interest, if any: {{ $loan->penalty_rate ?? '0' }}%</span>
                 </p>

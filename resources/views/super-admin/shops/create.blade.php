@@ -24,7 +24,7 @@
                 <div class="space-y-10">
                     <!-- Shop Information -->
                     <div class="bg-white premium-shadow rounded-[2.5rem] border border-slate-200 overflow-hidden">
-                        <div class="bg-slate-900 px-10 py-6 flex items-center justify-between">
+                        <div class="bg-indigo-700 px-10 py-6 flex items-center justify-between">
                             <div>
                                 <h3 class="text-sm font-black text-white uppercase tracking-[0.2em] italic">Identity Profile</h3>
                                 <p class="text-[9px] text-slate-400 font-bold uppercase tracking-widest mt-1">Tenant Brand & Logistics</p>
@@ -123,7 +123,7 @@
 
                     <div class="flex items-center justify-between pt-6">
                         <a href="{{ route('super-admin.shops.index') }}" class="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] hover:text-slate-600 transition-colors">Abort Onboarding</a>
-                        <button type="submit" class="px-16 py-5 btn-primary text-white font-black rounded-3xl shadow-2xl hover:shadow-blue-900/20 transition-all uppercase tracking-[0.2em] text-xs flex items-center space-x-4">
+                        <button type="submit" class="px-16 py-5 btn-primary text-white font-black rounded-3xl shadow-2xl hover:shadow-indigo-600/10 transition-all uppercase tracking-[0.2em] text-xs flex items-center space-x-4">
                             <span class="material-symbols-rounded text-xl">rocket_launch</span>
                             <span>Generate Ecosystem</span>
                         </button>

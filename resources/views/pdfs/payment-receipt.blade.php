@@ -23,7 +23,16 @@
 </head>
 <body>
     <div class="header">
-        <h1 class="company-name">{{ config('app.name', 'Pawn Broker') }}</h1>
+        @if($payment->shop && $payment->shop->logo)
+            <img src="{{ public_path('storage/' . $payment->shop->logo) }}" alt="Shop Logo" style="max-height: 60px; margin: 0 auto 10px; display: block;">
+        @endif
+        <h1 class="company-name">{{ $payment->shop ? $payment->shop->name : config('app.name', 'Pawn Broker') }}</h1>
+        @if($payment->shop && $payment->shop->address)
+            <p style="font-size: 11px; color: #666; margin: 3px 0;">{{ $payment->shop->address }}</p>
+        @endif
+        @if($payment->shop && $payment->shop->mobile)
+            <p style="font-size: 11px; color: #666; margin: 3px 0;">Contact: +91 {{ $payment->shop->mobile }}</p>
+        @endif
         <p class="receipt-title">PAYMENT RECEIPT</p>
         <p>No: <strong>{{ $payment->receipt_number }}</strong> | Date: <strong>{{ $payment->payment_date->format('d/m/Y') }}</strong></p>
     </div>

@@ -59,9 +59,9 @@
         </div>
 
         <div class="pt-2">
-            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-black text-xs uppercase tracking-[0.2em] py-5 rounded-2xl shadow-xl shadow-blue-200 transform active:scale-95 transition-all flex items-center justify-center space-x-2">
+            <button type="submit" class="btn-premium btn-premium-primary w-full py-5 rounded-2xl">
                 <span>Authorize Login</span>
-                <span class="material-icons text-sm">login</span>
+                <span class="material-symbols-rounded text-sm ml-2">login</span>
             </button>
         </div>
 

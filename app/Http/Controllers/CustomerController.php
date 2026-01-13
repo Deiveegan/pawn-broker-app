@@ -81,7 +81,7 @@ class CustomerController extends Controller
         if ($verificationResult['verified']) {
             $message .= ' ID proof verified successfully.';
         } elseif (isset($verificationResult['format_valid']) && $verificationResult['format_valid']) {
-            $message .= ' ID proof format is valid (API verification not configured).';
+            $message .= ' ID proof format is valid.';
         } else {
             $message .= ' Warning: ID proof could not be verified.';
         }

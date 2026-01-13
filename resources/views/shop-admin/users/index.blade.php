@@ -12,7 +12,7 @@
                     <p class="text-xs font-medium text-slate-500 uppercase tracking-widest">Internal team access & roles</p>
                 </div>
             </div>
-            <a href="{{ route('users.create') }}" class="px-8 py-3 bg-slate-900 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-slate-800 transition-all shadow-xl shadow-slate-900/20 flex items-center space-x-2">
+            <a href="{{ route('users.create') }}" class="px-8 py-3 bg-indigo-700 text-white font-black text-[10px] uppercase tracking-widest rounded-xl hover:bg-indigo-800 transition-all shadow-xl shadow-indigo-600/20 flex items-center space-x-2">
                 <span class="material-symbols-rounded text-lg">person_add</span>
                 <span>Enlist New Staff</span>
             </a>
@@ -44,7 +44,7 @@
                                 <tr class="hover:bg-slate-50/50 transition-all duration-300 group">
                                     <td class="px-10 py-8">
                                          <div class="flex items-center space-x-5">
-                                             <div class="w-12 h-12 rounded-2xl bg-slate-900 flex items-center justify-center text-white shadow-lg shadow-slate-900/10 group-hover:scale-110 transition-all">
+                                             <div class="w-12 h-12 rounded-2xl bg-indigo-700 flex items-center justify-center text-white shadow-lg shadow-indigo-600/10 group-hover:scale-110 transition-all">
                                                  <span class="material-symbols-rounded text-xl">person</span>
                                              </div>
                                              <div>
@@ -101,7 +101,7 @@
             
             <!-- Information Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-slate-900 premium-shadow rounded-[2.5rem] p-10 text-white relative overflow-hidden">
+                <div class="bg-indigo-700 premium-shadow rounded-[2.5rem] p-10 text-white relative overflow-hidden">
                     <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-white/5 rounded-full blur-3xl"></div>
                     <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-6 relative z-10">Governance Protocol</h4>
                     <p class="text-sm font-medium text-slate-400 leading-relaxed mb-8 relative z-10 italic">Only personnel with 'Admin' authority can modify, enlist, or revoke access for other team members. Staff members have restricted access to configuration terminals.</p>
